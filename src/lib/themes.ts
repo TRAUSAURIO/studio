@@ -10,37 +10,6 @@ export interface ThemeColors {
 }
 
 export const THEMES: Record<ThemeType, ThemeColors> = {
-  'parchment': {
-    primary: '#8b4513',
-    background: '#f4ecd8',
-    text: '#2d1a12',
-    accent: '#d4af37',
-    secondary: '#cdaa6d'
-  },
-  'golden-roses': {
-    primary: '#d4af37',
-    background: 'linear-gradient(135deg, #450a0a 0%, #881337 100%)',
-    text: '#fff1f2',
-    accent: '#fb7185',
-  },
-  'love-galaxy': {
-    primary: '#c084fc',
-    background: 'radial-gradient(circle at center, #1e1b4b 0%, #020617 100%)',
-    text: '#faf5ff',
-    accent: '#a855f7',
-  },
-  'minimal-glow': {
-    primary: '#ffd700',
-    background: '#0a0a0a',
-    text: '#ffffff',
-    accent: '#ff69b4',
-  },
-  'vintage-ink': {
-    primary: '#1e293b',
-    background: '#e2e8f0',
-    text: '#0f172a',
-    accent: '#334155',
-  },
   'cinematic-love': {
     primary: '#ffd700',
     background: 'linear-gradient(180deg, #1e1b4b 0%, #4c1d95 50%, #831843 100%)',
@@ -59,5 +28,31 @@ export const THEMES: Record<ThemeType, ThemeColors> = {
     background: 'linear-gradient(to bottom, #020617, #1e1b4b, #312e81)',
     text: '#f8fafc',
     accent: '#cbd5e1',
+  },
+  'parchment': {
+    primary: '#8b4513',
+    background: '#f4ecd8',
+    text: '#2d1a12',
+    accent: '#d4af37',
+    secondary: '#cdaa6d'
+  },
+  'luxury-white': {
+    primary: '#1a1a1a',
+    background: 'linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%)',
+    text: '#111827',
+    accent: '#ec4899',
+    overlay: 'linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.05))'
+  },
+  'deep-passion': {
+    primary: '#ffffff',
+    background: 'linear-gradient(45deg, #450a0a 0%, #991b1b 100%)',
+    text: '#fef2f2',
+    accent: '#fca5a5',
+  },
+  'starlight-indigo': {
+    primary: '#e0e7ff',
+    background: 'radial-gradient(circle at top, #312e81 0%, #1e1b4b 100%)',
+    text: '#f5f3ff',
+    accent: '#818cf8',
   }
 };

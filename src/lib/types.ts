@@ -1,5 +1,5 @@
-export type ThemeType = 'parchment' | 'golden-roses' | 'love-galaxy' | 'minimal-glow' | 'vintage-ink' | 'cinematic-love' | 'golden-hour' | 'midnight-romance';
-export type ParticleType = 'hearts' | 'stars' | 'petals' | 'snow' | 'glitter' | 'sparks';
+export type ThemeType = 'cinematic-love' | 'golden-hour' | 'midnight-romance' | 'parchment' | 'luxury-white' | 'deep-passion' | 'starlight-indigo';
+export type ParticleType = 'petals' | 'hearts' | 'stars' | 'snow' | 'glitter' | 'sparks';
 export type FontStyle = 'serif' | 'sans' | 'mono' | 'cursive';
 
 export interface ExperienceData {

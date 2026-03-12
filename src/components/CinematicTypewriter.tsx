@@ -8,7 +8,6 @@ interface Heart {
   x: number;
   y: number;
   size: number;
-  rotation: number;
 }
 
 interface CinematicTypewriterProps {
@@ -25,21 +24,20 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
   
   const requestRef = useRef<number>(null);
   const lastUpdateTimeRef = useRef<number>(0);
-  const currentDelayRef = useRef<number>(180); // Comienza con calma
+  const currentDelayRef = useRef<number>(180);
 
   const spawnHearts = useCallback((x: number, y: number) => {
-    const newHearts: Heart[] = Array.from({ length: Math.floor(Math.random() * 3) + 3 }).map(() => ({
+    const newHearts: Heart[] = Array.from({ length: 3 }).map(() => ({
       id: Date.now() + Math.random(),
-      x: x + (Math.random() - 0.5) * 60,
+      x: x + (Math.random() - 0.5) * 40,
       y: y,
-      size: Math.random() * 15 + 15,
-      rotation: (Math.random() - 0.5) * 90
+      size: Math.random() * 10 + 10,
     }));
     setHearts(prev => [...prev, ...newHearts]);
     
     setTimeout(() => {
       setHearts(prev => prev.filter(h => !newHearts.includes(h)));
-    }, 3000);
+    }, 2500);
   }, []);
 
   const animate = (time: number) => {
@@ -52,25 +50,26 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
       setDisplayedText(prev => [...prev, char]);
       setCurrentIndex(prev => prev + 1);
       
-      // Aceleración emocional fluida
-      if (currentDelayRef.current > 45) {
-        currentDelayRef.current -= 5;
+      // Dinámica de escritura emocional
+      if (currentDelayRef.current > 40) {
+        currentDelayRef.current -= 6;
       }
 
-      // Pausas poéticas en puntuación
-      if (char === '.' || char === '!' || char === '?' || char === ',') {
-        currentDelayRef.current += 300;
+      // Pausas naturales en puntuación
+      if (['.', '!', '?', ',', ';'].includes(char)) {
+        currentDelayRef.current += 400;
         
-        const cursorElement = containerRef.current?.querySelector('.cinematic-cursor');
-        if (cursorElement) {
-          const rect = cursorElement.getBoundingClientRect();
+        // Efecto visual en pausas
+        const cursor = containerRef.current?.querySelector('.cinematic-cursor');
+        if (cursor) {
+          const rect = cursor.getBoundingClientRect();
           const parentRect = containerRef.current?.getBoundingClientRect();
           if (parentRect) {
             spawnHearts(rect.left - parentRect.left, rect.top - parentRect.top);
           }
         }
       } else if (char === ' ') {
-        currentDelayRef.current += 50;
+        currentDelayRef.current += 60;
       }
 
       lastUpdateTimeRef.current = time;
@@ -95,7 +94,7 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
       {hearts.map(heart => (
         <svg
           key={heart.id}
-          className="floating-heart text-rose-500 fill-current opacity-70 blur-[1px]"
+          className="floating-heart text-pink-500 fill-current opacity-40 blur-[1px]"
           style={{
             left: heart.x,
             top: heart.y,
@@ -110,12 +109,15 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
 
       <span className="relative">
         {displayedText.map((char, i) => (
-          <span key={i} className="letter-appear">
-            {char === ' ' ? '\u00A0' : char}
+          <span key={i} className="ink-reveal inline-block" style={{ animationDelay: `${i * 10}ms` }}>
+            <span className="relative">
+               {char === ' ' ? '\u00A0' : char}
+               <span className="absolute inset-0 blur-[8px] opacity-30 text-romantic-accent">{char === ' ' ? '' : char}</span>
+            </span>
           </span>
         ))}
         {currentIndex < text.length && (
-          <span className="cinematic-cursor bg-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.8)]" />
+          <span className="cinematic-cursor w-[2px] h-[1em] bg-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.8)] absolute inline-block ml-1 animate-pulse" />
         )}
       </span>
     </div>
