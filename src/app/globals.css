@@ -17,7 +17,7 @@
   body { @apply bg-[#020617] text-foreground overflow-x-hidden antialiased; }
 }
 
-/* --- CINEMATIC LIGHTING --- */
+/* --- CINEMATIC LIGHTING & EFFECTS --- */
 .film-grain {
   position: fixed;
   inset: 0;
@@ -38,42 +38,43 @@
 .flare {
   position: absolute;
   width: 150vw;
-  height: 200px;
-  background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.05), rgba(251, 191, 36, 0.05), transparent);
+  height: 300px;
+  background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.08), rgba(251, 191, 36, 0.08), transparent);
   transform: rotate(-35deg) translateY(-100%);
-  filter: blur(80px);
-  animation: flareMove 12s infinite linear;
+  filter: blur(100px);
+  animation: flareMove 15s infinite linear;
 }
 
 @keyframes flareMove {
-  0% { transform: rotate(-35deg) translateY(-100%) translateX(-100%); }
-  100% { transform: rotate(-35deg) translateY(100%) translateX(100%); }
+  0% { transform: rotate(-35deg) translateY(-120%) translateX(-100%); }
+  100% { transform: rotate(-35deg) translateY(120%) translateX(100%); }
 }
 
-/* --- NEON TEXT --- */
+/* --- NEON TEXT & CARDS --- */
 .neon-text-pink {
   text-shadow: 0 0 10px rgba(236, 72, 153, 0.5), 0 0 20px rgba(236, 72, 153, 0.3);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px) scale(1.01);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(236, 72, 153, 0.3);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(236, 72, 153, 0.1);
 }
 
-/* --- ADVANCED 3D ENVELOPE --- */
+/* --- ADVANCED 3D ENVELOPE (ULTRA PREMIUM) --- */
 .envelope-container {
-  perspective: 2000px;
+  perspective: 2500px;
   width: 100%;
-  max-width: 500px;
-  height: 350px;
+  max-width: 550px;
+  height: 380px;
   position: relative;
   cursor: pointer;
 }
@@ -83,7 +84,7 @@
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .envelope-base {
@@ -93,34 +94,26 @@
   position: absolute;
   bottom: 0;
   border-radius: 4px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
   z-index: 10;
   transform-style: preserve-3d;
-  background-image: linear-gradient(135deg, #ffffff 0%, #f1f1f1 100%);
+  background-image: linear-gradient(135deg, #ffffff 0%, #f4f4f4 100%);
+  border: 1px solid rgba(0,0,0,0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(0,0,0,0.05);
-}
-
-.envelope-base::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(to top, rgba(0,0,0,0.05), transparent);
-  pointer-events: none;
 }
 
 .envelope-flap {
   width: 100%;
   height: 100%;
-  background: #f9f9f9;
+  background: #fdfdfd;
   position: absolute;
   top: 0;
   left: 0;
   clip-path: polygon(0 0, 100% 0, 50% 60%);
   transform-origin: top;
-  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 20;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   border-top: 1px solid white;
@@ -132,8 +125,8 @@
 }
 
 .wax-seal {
-  width: 70px;
-  height: 70px;
+  width: 75px;
+  height: 75px;
   background: radial-gradient(circle at 30% 30%, #be123c, #881337);
   border-radius: 50%;
   position: absolute;
@@ -145,56 +138,85 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.5s ease;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .wax-seal::after {
   content: "❤";
   color: rgba(255,255,255,0.8);
-  font-size: 24px;
+  font-size: 26px;
   filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
 }
 
 .envelope-open .wax-seal {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(1.8) rotate(20deg);
-  filter: blur(15px);
+  transform: translate(-50%, -50%) scale(2) rotate(25deg);
+  filter: blur(20px);
 }
 
 .letter-content {
   position: absolute;
-  width: 90%;
-  height: 80%;
+  width: 92%;
+  height: 85%;
   background: white;
-  left: 5%;
-  bottom: 5%;
+  left: 4%;
+  bottom: 4%;
   z-index: 8;
   transform: translateY(0);
-  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  padding: 20px;
+  transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+  padding: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(0,0,0,0.02);
 }
 
 .envelope-open .letter-content {
-  transform: translateY(-50%) scale(1.05);
+  transform: translateY(-60%) rotate(-1deg) scale(1.08);
 }
 
-/* --- INK REVEAL ANIMATION --- */
+/* --- INK REVEAL (PROFESSIONAL FOCUS) --- */
 @keyframes inkFlow {
-  0% { opacity: 0; filter: blur(12px) brightness(1.5); transform: scale(1.1) translateY(5px); }
+  0% { opacity: 0; filter: blur(15px) brightness(2); transform: scale(1.15) translateY(10px); }
   100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1) translateY(0); }
 }
 
 .ink-reveal-char {
   display: inline-block;
-  animation: inkFlow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: inkFlow 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-/* --- TEXTURES --- */
+/* --- SHIMMER EFFECT FOR BUTTONS --- */
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-btn::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shimmer 4s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* --- UTILS --- */
 .parchment-bg {
   background-color: #f4ecd8;
   background-image: 
@@ -203,12 +225,20 @@
   color: #2d1a12;
 }
 
-/* --- UTILS --- */
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 8s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-30px) rotate(1deg); }
+}
+
+.animate-blur-in {
+  animation: blurIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(20px); transform: scale(0.95); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
 }
