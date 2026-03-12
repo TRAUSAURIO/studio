@@ -47,5 +47,17 @@ export const THEMES: Record<ThemeType, ThemeColors> = {
     text: '#ffffff',
     accent: '#f472b6',
     overlay: 'radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.4) 100%)'
+  },
+  'golden-hour': {
+    primary: '#fbbf24',
+    background: 'linear-gradient(to bottom, #7c2d12, #ea580c, #fbbf24)',
+    text: '#fffbeb',
+    accent: '#fde68a',
+  },
+  'midnight-romance': {
+    primary: '#94a3b8',
+    background: 'linear-gradient(to bottom, #020617, #1e1b4b, #312e81)',
+    text: '#f8fafc',
+    accent: '#cbd5e1',
   }
 };

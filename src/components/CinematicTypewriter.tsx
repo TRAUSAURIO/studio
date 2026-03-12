@@ -17,33 +17,26 @@ interface CinematicTypewriterProps {
   className?: string;
 }
 
-/**
- * CinematicTypewriter - Un efecto de máquina de escribir ultra romántico
- * con velocidad variable, partículas de corazones y cursor dorado.
- */
 export function CinematicTypewriter({ text, onComplete, className }: CinematicTypewriterProps) {
   const [displayedText, setDisplayedText] = useState<string[]>([]);
   const [hearts, setHearts] = useState<Heart[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Referencias para la lógica de tiempo y requestAnimationFrame
   const requestRef = useRef<number>(null);
   const lastUpdateTimeRef = useRef<number>(0);
-  const currentDelayRef = useRef<number>(150); // Delay inicial lento
+  const currentDelayRef = useRef<number>(180); // Comienza con calma
 
-  // Función para crear partículas de corazones al terminar una palabra
   const spawnHearts = useCallback((x: number, y: number) => {
-    const newHearts: Heart[] = Array.from({ length: Math.floor(Math.random() * 3) + 2 }).map(() => ({
+    const newHearts: Heart[] = Array.from({ length: Math.floor(Math.random() * 3) + 3 }).map(() => ({
       id: Date.now() + Math.random(),
-      x: x + (Math.random() - 0.5) * 40,
+      x: x + (Math.random() - 0.5) * 60,
       y: y,
-      size: Math.random() * 10 + 10,
-      rotation: (Math.random() - 0.5) * 45
+      size: Math.random() * 15 + 15,
+      rotation: (Math.random() - 0.5) * 90
     }));
     setHearts(prev => [...prev, ...newHearts]);
     
-    // Limpiar corazones después de que termine la animación
     setTimeout(() => {
       setHearts(prev => prev.filter(h => !newHearts.includes(h)));
     }, 3000);
@@ -59,14 +52,15 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
       setDisplayedText(prev => [...prev, char]);
       setCurrentIndex(prev => prev + 1);
       
-      // Lógica de aceleración: Empezamos lento y aceleramos suavemente
-      // hasta un mínimo de 30ms por carácter.
-      if (currentDelayRef.current > 35) {
-        currentDelayRef.current -= 4;
+      // Aceleración emocional fluida
+      if (currentDelayRef.current > 45) {
+        currentDelayRef.current -= 5;
       }
 
-      // Si es el final de una palabra o signo de puntuación, disparamos corazones
-      if (char === ' ' || char === '.' || char === '!' || char === '?') {
+      // Pausas poéticas en puntuación
+      if (char === '.' || char === '!' || char === '?' || char === ',') {
+        currentDelayRef.current += 300;
+        
         const cursorElement = containerRef.current?.querySelector('.cinematic-cursor');
         if (cursorElement) {
           const rect = cursorElement.getBoundingClientRect();
@@ -75,8 +69,8 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
             spawnHearts(rect.left - parentRect.left, rect.top - parentRect.top);
           }
         }
-        // Pausa dramática en puntuación
-        if (char !== ' ') currentDelayRef.current += 100;
+      } else if (char === ' ') {
+        currentDelayRef.current += 50;
       }
 
       lastUpdateTimeRef.current = time;
@@ -98,11 +92,10 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
 
   return (
     <div ref={containerRef} className={cn("relative inline-block", className)}>
-      {/* Sistema de Partículas de Corazones */}
       {hearts.map(heart => (
         <svg
           key={heart.id}
-          className="floating-heart text-pink-400 fill-current opacity-60"
+          className="floating-heart text-rose-500 fill-current opacity-70 blur-[1px]"
           style={{
             left: heart.x,
             top: heart.y,
@@ -115,14 +108,15 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
         </svg>
       ))}
 
-      {/* Renderizado de letras con animación individual */}
       <span className="relative">
         {displayedText.map((char, i) => (
           <span key={i} className="letter-appear">
             {char === ' ' ? '\u00A0' : char}
           </span>
         ))}
-        {currentIndex < text.length && <span className="cinematic-cursor" />}
+        {currentIndex < text.length && (
+          <span className="cinematic-cursor bg-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.8)]" />
+        )}
       </span>
     </div>
   );

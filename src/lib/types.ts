@@ -1,4 +1,4 @@
-export type ThemeType = 'parchment' | 'golden-roses' | 'love-galaxy' | 'minimal-glow' | 'vintage-ink' | 'cinematic-love';
+export type ThemeType = 'parchment' | 'golden-roses' | 'love-galaxy' | 'minimal-glow' | 'vintage-ink' | 'cinematic-love' | 'golden-hour' | 'midnight-romance';
 export type ParticleType = 'hearts' | 'stars' | 'petals' | 'snow' | 'glitter' | 'sparks';
 export type FontStyle = 'serif' | 'sans' | 'mono' | 'cursive';
 
@@ -18,7 +18,7 @@ export const DEFAULT_EXPERIENCE: ExperienceData = {
   name: 'Mi Amor',
   message: 'Quería decirte lo mucho que significas para mí...',
   secretMessage: 'Eres mi mundo entero.',
-  youtubeId: 'L_jWHffIx5E', // Default romantic lo-fi
+  youtubeId: 'L_jWHffIx5E',
   theme: 'cinematic-love',
   particles: 'petals',
   fontStyle: 'cursive',
