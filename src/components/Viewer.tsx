@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { ExperienceData } from '@/lib/types';
 import { ThemeWrapper } from './ThemeWrapper';
 import { ParticleCanvas } from './ParticleCanvas';
-import { Typewriter } from './Typewriter';
+import { CinematicTypewriter } from './CinematicTypewriter';
 import { YouTubePlayer } from './YouTubePlayer';
 import { Heart } from 'lucide-react';
 
@@ -55,11 +55,10 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
 
         {stage === 'message' && (
           <div className="space-y-12 py-12">
-            <div className="prose prose-invert mx-auto">
-              <div className="text-2xl md:text-4xl leading-relaxed font-light opacity-90 drop-shadow-sm min-h-[200px]">
-                <Typewriter
+            <div className="mx-auto bg-parchment p-8 md:p-12 rounded-lg shadow-2xl transform rotate-1 transition-transform hover:rotate-0 duration-700">
+              <div className="text-2xl md:text-4xl leading-relaxed text-slate-900 font-cursive min-h-[300px]">
+                <CinematicTypewriter
                   text={data.message}
-                  delay={40}
                   onComplete={() => {}}
                 />
               </div>
@@ -83,9 +82,9 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
                 "{data.secretMessage}"
              </div>
              <div className="flex justify-center gap-6">
-               <Heart className="h-6 w-6 text-romantic-primary fill-current opacity-40 animate-bounce" />
-               <Heart className="h-8 w-8 text-romantic-primary fill-current opacity-60 animate-bounce delay-100" />
-               <Heart className="h-6 w-6 text-romantic-primary fill-current opacity-40 animate-bounce delay-200" />
+               <Heart className="h-6 w-6 text-pink-500 fill-current opacity-40 animate-bounce" />
+               <Heart className="h-8 w-8 text-pink-600 fill-current opacity-60 animate-bounce delay-100" />
+               <Heart className="h-6 w-6 text-pink-500 fill-current opacity-40 animate-bounce delay-200" />
              </div>
              <button
                onClick={() => setStage('intro')}
