@@ -6,7 +6,7 @@ import { ThemeWrapper } from './ThemeWrapper';
 import { ParticleCanvas } from './ParticleCanvas';
 import { CinematicTypewriter } from './CinematicTypewriter';
 import { YouTubePlayer } from './YouTubePlayer';
-import { Heart, Sparkles, ChevronRight, Calendar } from 'lucide-react';
+import { Heart, Sparkles, ChevronRight, Calendar, Volume2, Waves } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -164,7 +164,12 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
               {data.senderName && (
                 <div className="mt-8 text-center animate-in fade-in duration-1000 delay-1000">
                   <p className="text-pink-500 font-cursive text-2xl">Con amor,</p>
-                  <p className="text-white font-serif font-bold tracking-widest uppercase mt-1">{data.senderName}</p>
+                  <p className={cn(
+                    "font-bold tracking-widest uppercase mt-1",
+                    data.senderIsCursive ? "font-cursive text-3xl text-pink-400" : "font-serif text-white"
+                  )}>
+                    {data.senderName}
+                  </p>
                 </div>
               )}
 
@@ -204,16 +209,37 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
              
              <div className="flex justify-center items-center gap-8 md:gap-16 pt-8 w-full max-w-2xl">
                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-               <Heart className="h-20 w-20 md:h-32 md:w-32 text-rose-500 fill-current animate-bounce" />
+               <Heart 
+                className="text-rose-500 fill-current animate-bounce" 
+                style={{ 
+                  width: `${64 + (data.confettiStrength || 50) * 0.8}px`,
+                  height: `${64 + (data.confettiStrength || 50) * 0.8}px`
+                }}
+              />
                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
              </div>
 
-             <button
-               onClick={() => setStage('intro')}
-               className="mt-12 px-8 py-4 rounded-full border border-white/5 text-[8px] uppercase tracking-[1.2em] text-white/40 hover:text-white/80 transition-all font-black"
-             >
-               Volver al Inicio
-             </button>
+             <div className="flex flex-col items-center gap-4">
+                {data.ambientSound && data.ambientSound !== 'none' && (
+                  <div className="flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full">
+                    <div className="flex gap-1 items-end h-4">
+                      {[0.4, 0.8, 0.6, 1.0, 0.5].map((h, i) => (
+                        <div key={i} className="w-[3px] bg-white animate-pulse" style={{ height: `${h*100}%`, animationDelay: `${i*0.3}s` }} />
+                      ))}
+                    </div>
+                    <p className="text-[8px] uppercase tracking-[0.6em] text-white font-black border-l border-white/20 pl-4">
+                      {data.ambientSound} mode active
+                    </p>
+                  </div>
+                )}
+
+               <button
+                 onClick={() => setStage('intro')}
+                 className="mt-4 px-8 py-4 rounded-full border border-white/5 text-[8px] uppercase tracking-[1.2em] text-white/40 hover:text-white/80 transition-all font-black"
+               >
+                 Volver al Inicio
+               </button>
+             </div>
           </div>
         )}
       </div>
