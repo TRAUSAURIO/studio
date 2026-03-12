@@ -8,7 +8,7 @@
   --primary: 326 100% 60%;
   --primary-foreground: 210 40% 98%;
   --border: 217.2 32.6% 17.5%;
-  --radius: 0.75rem;
+  --radius: 1rem;
   --romantic-accent: #ec4899;
 }
 
@@ -17,14 +17,14 @@
   body { @apply bg-[#020617] text-foreground overflow-x-hidden antialiased; }
 }
 
-/* --- CINEMATIC LIGHTING & EFFECTS --- */
+/* --- CINEMATIC AMBIANCE --- */
 .film-grain {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 99;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.04;
+  opacity: 0.03;
 }
 
 .lens-flare-container {
@@ -38,11 +38,11 @@
 .flare {
   position: absolute;
   width: 150vw;
-  height: 300px;
-  background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.08), rgba(251, 191, 36, 0.08), transparent);
+  height: 400px;
+  background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.06), rgba(251, 191, 36, 0.06), transparent);
   transform: rotate(-35deg) translateY(-100%);
-  filter: blur(100px);
-  animation: flareMove 15s infinite linear;
+  filter: blur(120px);
+  animation: flareMove 18s infinite linear;
 }
 
 @keyframes flareMove {
@@ -50,33 +50,34 @@
   100% { transform: rotate(-35deg) translateY(120%) translateX(100%); }
 }
 
-/* --- NEON TEXT & CARDS --- */
+/* --- PREMIUM UI COMPONENTS --- */
 .neon-text-pink {
-  text-shadow: 0 0 10px rgba(236, 72, 153, 0.5), 0 0 20px rgba(236, 72, 153, 0.3);
+  text-shadow: 0 0 15px rgba(236, 72, 153, 0.4), 0 0 30px rgba(236, 72, 153, 0.2);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.02);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .glass-card:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(236, 72, 153, 0.3);
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(236, 72, 153, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
 }
 
-/* --- ADVANCED 3D ENVELOPE (ULTRA PREMIUM) --- */
+/* --- ULTRA PREMIUM 3D ENVELOPE --- */
 .envelope-container {
   perspective: 2500px;
   width: 100%;
-  max-width: 550px;
-  height: 380px;
+  max-width: 500px;
+  height: 350px;
   position: relative;
   cursor: pointer;
+  margin: 0 auto;
 }
 
 .envelope-3d {
@@ -84,20 +85,20 @@
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 1.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .envelope-base {
   width: 100%;
   height: 100%;
-  background: #fdfdfd;
+  background: #ffffff;
   position: absolute;
   bottom: 0;
   border-radius: 4px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 40px 80px rgba(0,0,0,0.7);
   z-index: 10;
   transform-style: preserve-3d;
-  background-image: linear-gradient(135deg, #ffffff 0%, #f4f4f4 100%);
+  background-image: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
   border: 1px solid rgba(0,0,0,0.05);
   display: flex;
   align-items: center;
@@ -107,16 +108,15 @@
 .envelope-flap {
   width: 100%;
   height: 100%;
-  background: #fdfdfd;
+  background: #ffffff;
   position: absolute;
   top: 0;
   left: 0;
   clip-path: polygon(0 0, 100% 0, 50% 60%);
   transform-origin: top;
-  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 20;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  border-top: 1px solid white;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
 .envelope-open .envelope-flap {
@@ -125,8 +125,8 @@
 }
 
 .wax-seal {
-  width: 75px;
-  height: 75px;
+  width: 80px;
+  height: 80px;
   background: radial-gradient(circle at 30% 30%, #be123c, #881337);
   border-radius: 50%;
   position: absolute;
@@ -134,61 +134,89 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 30;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(0,0,0,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .wax-seal::after {
   content: "❤";
-  color: rgba(255,255,255,0.8);
-  font-size: 26px;
+  color: rgba(255,255,255,0.85);
+  font-size: 28px;
   filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
 }
 
 .envelope-open .wax-seal {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(2) rotate(25deg);
-  filter: blur(20px);
+  transform: translate(-50%, -50%) scale(1.5) rotate(25deg);
+  filter: blur(15px);
 }
 
 .letter-content {
   position: absolute;
-  width: 92%;
-  height: 85%;
+  width: 94%;
+  height: 90%;
   background: white;
-  left: 4%;
-  bottom: 4%;
+  left: 3%;
+  bottom: 3%;
   z-index: 8;
   transform: translateY(0);
-  transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-  box-shadow: 0 5px 25px rgba(0,0,0,0.15);
-  padding: 30px;
+  transition: transform 1.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  padding: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(0,0,0,0.02);
+  border-radius: 2px;
 }
 
 .envelope-open .letter-content {
-  transform: translateY(-60%) rotate(-1deg) scale(1.08);
+  transform: translateY(-65%) rotate(-0.5deg) scale(1.05);
 }
 
-/* --- INK REVEAL (PROFESSIONAL FOCUS) --- */
+/* --- PARCHMENT THEME REFINEMENT --- */
+.parchment-bg {
+  background-color: #f4ecd8;
+  background-image: 
+    url("https://www.transparenttextures.com/patterns/papyros.png"),
+    radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.08) 100%);
+  color: #2d1a12;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.5), inset 0 0 100px rgba(139, 69, 19, 0.1);
+}
+
+/* --- ANIMATIONS --- */
 @keyframes inkFlow {
-  0% { opacity: 0; filter: blur(15px) brightness(2); transform: scale(1.15) translateY(10px); }
+  0% { opacity: 0; filter: blur(20px) brightness(2); transform: scale(1.1) translateY(10px); }
   100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1) translateY(0); }
 }
 
 .ink-reveal-char {
   display: inline-block;
-  animation: inkFlow 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: inkFlow 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-/* --- SHIMMER EFFECT FOR BUTTONS --- */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-25px) rotate(0.5deg); }
+}
+
+.animate-float {
+  animation: float 10s ease-in-out infinite;
+}
+
+.animate-blur-in {
+  animation: blurIn 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(30px); transform: scale(0.98); }
+  to { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+
+/* --- SHIMMER --- */
 .shimmer-btn {
   position: relative;
   overflow: hidden;
@@ -197,10 +225,10 @@
 .shimmer-btn::after {
   content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
   background: linear-gradient(
     45deg,
     transparent,
@@ -208,37 +236,10 @@
     transparent
   );
   transform: rotate(45deg);
-  animation: shimmer 4s infinite;
+  animation: shimmer 6s infinite;
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) rotate(45deg); }
-}
-
-/* --- UTILS --- */
-.parchment-bg {
-  background-color: #f4ecd8;
-  background-image: 
-    url("https://www.transparenttextures.com/patterns/papyros.png"),
-    radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.05) 100%);
-  color: #2d1a12;
-}
-
-.animate-float {
-  animation: float 8s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0); }
-  50% { transform: translateY(-30px) rotate(1deg); }
-}
-
-.animate-blur-in {
-  animation: blurIn 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-@keyframes blurIn {
-  from { opacity: 0; filter: blur(20px); transform: scale(0.95); }
-  to { opacity: 1; filter: blur(0); transform: scale(1); }
+  0% { transform: translateX(-150%) rotate(45deg); }
+  100% { transform: translateX(150%) rotate(45deg); }
 }

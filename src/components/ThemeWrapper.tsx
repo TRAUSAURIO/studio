@@ -25,6 +25,9 @@ export function ThemeWrapper({ theme, fontStyle, children, className }: ThemeWra
     sans: 'font-sans',
     mono: 'font-mono',
     cursive: 'font-cursive',
+    cinematic: 'font-headline',
+    clean: 'font-sans',
+    glow: 'font-headline'
   }[fontStyle];
 
   if (!mounted) return null;
@@ -32,7 +35,7 @@ export function ThemeWrapper({ theme, fontStyle, children, className }: ThemeWra
   return (
     <div
       className={cn(
-        "min-h-screen transition-all duration-1000 ease-in-out flex items-center justify-center p-6 relative overflow-hidden",
+        "min-h-screen transition-all duration-1000 ease-in-out flex items-center justify-center relative overflow-hidden",
         fontClass,
         className
       )}
@@ -43,7 +46,7 @@ export function ThemeWrapper({ theme, fontStyle, children, className }: ThemeWra
         '--romantic-accent': colors.accent,
       } as React.CSSProperties}
     >
-      {/* Background Overlay for Cinematic Themes */}
+      {/* Background Overlay for Depth */}
       {colors.overlay && (
         <div className="fixed inset-0 pointer-events-none z-0" style={{ background: colors.overlay }} />
       )}
@@ -58,7 +61,7 @@ export function ThemeWrapper({ theme, fontStyle, children, className }: ThemeWra
           font-family: 'Great Vibes', cursive;
         }
         .animate-spin-slow {
-          animation: spin 8s linear infinite;
+          animation: spin 10s linear infinite;
         }
         @keyframes spin {
           from { transform: rotate(0deg); }
@@ -66,7 +69,7 @@ export function ThemeWrapper({ theme, fontStyle, children, className }: ThemeWra
         }
       `}</style>
       
-      <div className="w-full max-w-6xl relative z-10">
+      <div className="w-full max-w-7xl relative z-10 flex flex-col items-center justify-center min-h-screen p-6">
         {children}
       </div>
     </div>
