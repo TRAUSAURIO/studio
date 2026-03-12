@@ -18,7 +18,7 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let particles: any[] = [];
+    let particles: Particle[] = [];
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -35,30 +35,43 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
       speedX: number;
       speedY: number;
       opacity: number;
-      color: string;
       rotation: number;
       rotationSpeed: number;
+      color: string;
+      waveOffset: number;
+      pulse: number;
 
       constructor() {
         this.x = Math.random() * canvas!.width;
         this.y = Math.random() * canvas!.height;
         this.size = Math.random() * 5 + 2;
         this.speedX = (Math.random() - 0.5) * 1;
-        this.speedY = Math.random() * 1 + 0.5;
-        this.opacity = Math.random() * 0.5 + 0.2;
+        this.speedY = Math.random() * 0.8 + 0.5;
+        this.opacity = Math.random() * 0.5 + 0.1;
         this.rotation = Math.random() * Math.PI * 2;
         this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+        this.waveOffset = Math.random() * Math.PI * 2;
+        this.pulse = Math.random() * 0.1;
         this.color = this.getColor();
       }
 
       getColor() {
+        const p = Math.random();
         switch (type) {
-          case 'hearts': return `rgba(255, ${Math.random() * 100 + 100}, ${Math.random() * 100 + 100}, ${this.opacity})`;
-          case 'stars': return `rgba(255, 255, ${Math.random() * 100 + 155}, ${this.opacity})`;
-          case 'petals': return `rgba(255, ${Math.random() * 50 + 150}, ${Math.random() * 50 + 150}, ${this.opacity})`;
-          case 'snow': return `rgba(255, 255, 255, ${this.opacity})`;
-          case 'glitter': return `rgba(255, 215, 0, ${this.opacity})`;
-          default: return `rgba(255, 255, 255, ${this.opacity})`;
+          case 'petals':
+            return p > 0.5 ? '#fb7185' : '#e11d48';
+          case 'hearts':
+            return p > 0.5 ? '#f472b6' : '#ec4899';
+          case 'stars':
+            return '#ffffff';
+          case 'snow':
+            return '#f1f5f9';
+          case 'glitter':
+            return '#fbbf24';
+          case 'sparks':
+            return '#fdba74';
+          default:
+            return '#ffffff';
         }
       }
 
@@ -70,26 +83,29 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
         ctx.globalAlpha = this.opacity;
         ctx.fillStyle = this.color;
 
-        if (type === 'hearts') {
+        if (type === 'petals') {
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size * 1.5, this.size, 0, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (type === 'hearts') {
           ctx.beginPath();
           ctx.moveTo(0, 0);
           ctx.bezierCurveTo(-this.size, -this.size, -this.size * 2, this.size / 3, 0, this.size);
           ctx.bezierCurveTo(this.size * 2, this.size / 3, this.size, -this.size, 0, 0);
           ctx.fill();
         } else if (type === 'stars') {
+          const s = this.size * (1 + Math.sin(Date.now() * 0.005 + this.waveOffset) * 0.3);
           ctx.beginPath();
           for (let i = 0; i < 5; i++) {
-            ctx.lineTo(Math.cos((18 + i * 72) / 180 * Math.PI) * this.size,
-                      -Math.sin((18 + i * 72) / 180 * Math.PI) * this.size);
-            ctx.lineTo(Math.cos((54 + i * 72) / 180 * Math.PI) * this.size * 0.5,
-                      -Math.sin((54 + i * 72) / 180 * Math.PI) * this.size * 0.5);
+            ctx.lineTo(Math.cos((18 + i * 72) / 180 * Math.PI) * s, -Math.sin((18 + i * 72) / 180 * Math.PI) * s);
+            ctx.lineTo(Math.cos((54 + i * 72) / 180 * Math.PI) * s * 0.5, -Math.sin((54 + i * 72) / 180 * Math.PI) * s * 0.5);
           }
           ctx.closePath();
           ctx.fill();
-        } else if (type === 'petals') {
-          ctx.beginPath();
-          ctx.ellipse(0, 0, this.size * 1.5, this.size * 0.8, 0, 0, Math.PI * 2);
-          ctx.fill();
+        } else if (type === 'glitter') {
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = this.color;
+          ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
         } else {
           ctx.beginPath();
           ctx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
@@ -100,22 +116,24 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
       }
 
       update() {
-        this.x += this.speedX;
+        // Wind / Drift logic
+        const drift = Math.sin(Date.now() * 0.001 + this.waveOffset) * 0.5;
+        this.x += this.speedX + drift;
         this.y += this.speedY;
         this.rotation += this.rotationSpeed;
 
-        if (this.y > canvas!.height) {
+        if (this.y > canvas!.height + 20) {
           this.y = -20;
           this.x = Math.random() * canvas!.width;
         }
-        if (this.x > canvas!.width) this.x = 0;
-        if (this.x < 0) this.x = canvas!.width;
+        if (this.x > canvas!.width + 20) this.x = -20;
+        if (this.x < -20) this.x = canvas!.width + 20;
       }
     }
 
     const init = () => {
       particles = [];
-      const count = Math.min(Math.floor(window.innerWidth / 15), 100);
+      const count = Math.min(Math.floor(window.innerWidth / 15), 120);
       for (let i = 0; i < count; i++) {
         particles.push(new Particle());
       }

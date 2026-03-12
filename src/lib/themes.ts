@@ -6,6 +6,7 @@ export interface ThemeColors {
   text: string;
   accent: string;
   secondary?: string;
+  overlay?: string;
 }
 
 export const THEMES: Record<ThemeType, ThemeColors> = {
@@ -40,4 +41,11 @@ export const THEMES: Record<ThemeType, ThemeColors> = {
     text: '#0f172a',
     accent: '#334155',
   },
+  'cinematic-love': {
+    primary: '#ffd700',
+    background: 'linear-gradient(180deg, #1e1b4b 0%, #4c1d95 50%, #831843 100%)',
+    text: '#ffffff',
+    accent: '#f472b6',
+    overlay: 'radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.4) 100%)'
+  }
 };
