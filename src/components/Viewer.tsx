@@ -8,6 +8,7 @@ import { CinematicTypewriter } from './CinematicTypewriter';
 import { YouTubePlayer } from './YouTubePlayer';
 import { Heart, Sparkles, ChevronRight, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface ViewerProps {
   data: ExperienceData;
@@ -42,14 +43,19 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
 
   if (!mounted) return null;
 
+  // Font sizes with defaults for older encoded URLs
+  const titleSize = data.titleFontSize || 64;
+  const nameSize = data.nameFontSize || 32;
+  const messageSize = data.messageFontSize || 24;
+  const secretSize = data.secretFontSize || 128;
+
   return (
     <ThemeWrapper theme={data.theme} fontStyle={data.fontStyle} className="p-0">
       <div className="film-grain" />
       
-      {/* Cinematic Lighting Engine */}
       <div className="lens-flare-container">
-        <div className="flare" style={{ top: '5%', left: '-10%', animationDelay: '0s', opacity: 0.2 }} />
-        <div className="flare" style={{ top: '70%', right: '-15%', animationDelay: '8s', opacity: 0.15 }} />
+        <div className="flare" style={{ top: '5%', left: '-10%', animationDelay: '0s', opacity: 0.1 }} />
+        <div className="flare" style={{ top: '70%', right: '-15%', animationDelay: '8s', opacity: 0.1 }} />
       </div>
 
       <ParticleCanvas type={showExplosion ? 'glitter' : data.particles} />
@@ -58,20 +64,19 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
 
       <div className="relative z-20 w-full min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
         
-        {/* --- INTRO STAGE: THE ENVELOPE --- */}
+        {/* --- INTRO STAGE --- */}
         {stage === 'intro' && (
-          <div className="flex flex-col items-center gap-16 text-center animate-in fade-in zoom-in duration-1000 w-full max-w-4xl">
-            <div className="space-y-6">
-              <h1 className="text-5xl md:text-8xl font-headline tracking-tighter text-white drop-shadow-[0_0_50px_rgba(255,255,255,0.3)] animate-float">
+          <div className="flex flex-col items-center gap-10 text-center animate-in fade-in zoom-in duration-1000 w-full max-w-4xl">
+            <div className="space-y-4">
+              <h1 
+                className="font-headline tracking-tighter text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] animate-float"
+                style={{ fontSize: `${titleSize}px` }}
+              >
                 {data.title}
               </h1>
-              <div className="flex items-center justify-center gap-4 opacity-40">
-                <div className="h-px w-12 bg-white" />
-                <p className="text-white uppercase tracking-[1.2em] text-[9px] font-black">
-                  Una Entrega de LoveLink
-                </p>
-                <div className="h-px w-12 bg-white" />
-              </div>
+              <p className="text-white/40 uppercase tracking-[1em] text-[8px] font-black">
+                LoveLink Experience
+              </p>
             </div>
             
             <div className="envelope-container" onClick={handleOpenLetter}>
@@ -80,66 +85,80 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
                   <div className="wax-seal" />
                 </div>
                 <div className="envelope-flap" />
-                <div className="letter-content rounded-sm shadow-2xl flex flex-col items-center justify-center text-center">
-                   <p className="text-pink-600 font-cursive text-2xl">Dedicado con amor a</p>
-                   <p className="text-slate-900 font-serif text-3xl md:text-4xl font-black mt-2 uppercase tracking-widest leading-none border-b-2 border-pink-50 pb-2">{data.name}</p>
-                   <Heart className="text-rose-500 fill-current h-10 w-10 mt-6 animate-pulse opacity-30" />
+                <div className="letter-content rounded-sm shadow-2xl flex flex-col items-center justify-center text-center p-6">
+                   <p className="text-pink-600 font-cursive text-xl">Para</p>
+                   <p 
+                    className="text-slate-900 font-serif font-black uppercase tracking-widest leading-tight border-b-2 border-pink-50/50 pb-1"
+                    style={{ fontSize: `${nameSize}px` }}
+                   >
+                    {data.name}
+                   </p>
+                   {data.imageUrl && (
+                     <div className="mt-4 relative w-32 h-32 md:w-40 md:h-40 rotate-[-2deg] border-4 border-white shadow-lg overflow-hidden">
+                        <Image 
+                          src={data.imageUrl} 
+                          alt="Photo" 
+                          fill 
+                          className="object-cover" 
+                          unoptimized 
+                        />
+                     </div>
+                   )}
+                   <Heart className="text-rose-500/20 fill-current h-8 w-8 mt-4 animate-pulse" />
                 </div>
               </div>
             </div>
 
             <button 
               onClick={handleOpenLetter}
-              className="group flex flex-col items-center gap-6 transition-all hover:scale-105 active:scale-95"
+              className="group flex flex-col items-center gap-4 transition-all"
             >
-              <div className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:border-pink-500 transition-all bg-white/5 backdrop-blur-xl">
-                <ChevronRight className="text-white group-hover:text-pink-500 transition-colors h-6 w-6" />
+              <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:border-pink-500 transition-all bg-white/5 backdrop-blur-xl">
+                <ChevronRight className="text-white group-hover:text-pink-500 h-5 w-5" />
               </div>
-              <span className="text-[10px] uppercase tracking-[0.8em] text-white/40 group-hover:text-white font-black animate-pulse">Abrir Carta</span>
+              <span className="text-[9px] uppercase tracking-[0.6em] text-white/40 font-black">Empezar</span>
             </button>
           </div>
         )}
 
-        {/* --- OPENING STAGE: TRANSITION --- */}
-        {stage === 'opening' && (
-           <div className="text-white text-center animate-blur-in flex flex-col items-center gap-6">
-             <div className="relative">
-               <div className="absolute inset-0 blur-[100px] bg-pink-500/30 rounded-full animate-pulse" />
-               <div className="space-y-4 relative">
-                 <p className="text-md uppercase tracking-[1.5em] font-black italic opacity-60">Sintonizando el alma...</p>
-                 <div className="flex justify-center gap-3">
-                    {[1,2,3].map(i => <Star key={i} className="h-3 w-3 fill-white opacity-20 animate-spin-slow" style={{ animationDelay: `${i*0.5}s` }} />)}
-                 </div>
-               </div>
-             </div>
-           </div>
-        )}
-
-        {/* --- MESSAGE STAGE: THE LETTER --- */}
+        {/* --- MESSAGE STAGE --- */}
         {stage === 'message' && (
-          <div className="w-full max-w-4xl animate-in fade-in slide-in-from-bottom-20 duration-1200 px-4 flex flex-col items-center">
+          <div className="w-full max-w-4xl animate-in fade-in slide-in-from-bottom-10 duration-1000 px-4 flex flex-col items-center">
             <div className={cn(
-              "relative w-full p-10 md:p-20 rounded-[3rem] shadow-[0_50px_150px_rgba(0,0,0,0.8)] border border-white/5 overflow-hidden transition-all duration-1000",
+              "relative w-full p-8 md:p-16 rounded-[2.5rem] shadow-2xl border border-white/5 overflow-hidden transition-all",
               data.theme === 'parchment' ? "parchment-bg" : "bg-black/40 backdrop-blur-3xl text-white"
             )}>
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
-              
-              <div className="relative z-10 text-2xl md:text-4xl lg:text-5xl leading-[1.7] md:leading-[1.6] min-h-[300px] font-medium text-center">
+              {data.imageUrl && (
+                <div className="mb-10 flex justify-center">
+                  <div className="relative w-48 h-48 md:w-72 md:h-72 border-[8px] border-white shadow-2xl rotate-1 overflow-hidden">
+                    <Image 
+                      src={data.imageUrl} 
+                      alt="Moment" 
+                      fill 
+                      className="object-cover" 
+                      unoptimized 
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div 
+                className="relative z-10 leading-relaxed font-medium text-center"
+                style={{ fontSize: `${messageSize}px` }}
+              >
                 <CinematicTypewriter
                   text={data.message}
                   onComplete={() => {}}
                 />
               </div>
 
-              <div className="mt-16 flex flex-col items-center border-t border-white/5 pt-12">
-                <p className="text-[9px] uppercase tracking-[1em] mb-10 opacity-20 font-black">Un Secreto por Revelar</p>
+              <div className="mt-12 flex flex-col items-center border-t border-white/10 pt-10">
                 <button
                   onClick={handleSecretReveal}
-                  className="group relative px-14 py-5 overflow-hidden rounded-full border border-white/10 transition-all hover:border-pink-500/40 active:scale-95 bg-white/5 backdrop-blur-xl shadow-xl shimmer-btn"
+                  className="group relative px-10 py-4 overflow-hidden rounded-full border border-white/10 transition-all hover:border-pink-500/40 bg-white/5 backdrop-blur-xl shimmer-btn"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <span className="relative text-[10px] uppercase tracking-[1em] text-white font-black group-hover:text-pink-200 transition-colors flex items-center gap-4">
-                    <Sparkles className="h-5 w-5 text-pink-400" /> REVELAR
+                  <span className="relative text-[9px] uppercase tracking-[0.8em] text-white font-black flex items-center gap-3">
+                    <Sparkles className="h-4 w-4 text-pink-400" /> REVELAR SECRETO
                   </span>
                 </button>
               </div>
@@ -147,56 +166,44 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
           </div>
         )}
 
-        {/* --- SECRET STAGE: THE CONFESSION --- */}
+        {/* --- SECRET STAGE --- */}
         {stage === 'secret' && (
-          <div className="flex flex-col items-center justify-center text-center space-y-16 py-10 animate-in fade-in zoom-in duration-1500 px-6 w-full max-w-6xl h-full">
+          <div className="flex flex-col items-center justify-center text-center space-y-12 animate-in fade-in zoom-in duration-1000 px-6 w-full max-w-6xl h-full">
              <div className="relative flex flex-col items-center w-full">
-               {/* Background Emotional Glow */}
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] blur-[180px] bg-romantic-accent/30 animate-pulse rounded-full pointer-events-none" />
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] blur-[120px] bg-romantic-accent/20 animate-pulse rounded-full pointer-events-none" />
                
-               <div className="relative flex flex-col items-center space-y-12 md:space-y-24">
-                 <p className="text-pink-300 uppercase tracking-[2.5em] text-[10px] md:text-[14px] font-black opacity-60 leading-tight">
+               <div className="relative flex flex-col items-center space-y-8 md:space-y-12">
+                 <p className="text-pink-300 uppercase tracking-[2.5em] text-[10px] md:text-[12px] font-black opacity-60">
                    LO QUE EL CORAZÓN YA SABÍA
                  </p>
                  
-                 <h2 className="text-6xl md:text-9xl lg:text-[16rem] font-cursive text-white drop-shadow-[0_0_80px_rgba(255,255,255,0.5)] leading-tight italic select-none">
+                 <h2 
+                  className="font-cursive text-white drop-shadow-[0_0_60px_rgba(255,255,255,0.4)] leading-tight italic select-none"
+                  style={{ fontSize: `${secretSize}px` }}
+                 >
                    "{data.secretMessage}"
                  </h2>
                </div>
              </div>
              
-             {/* Center Heart Decoration - More refined lines */}
-             <div className="flex justify-center items-center gap-10 md:gap-24 pt-12 w-full max-w-4xl">
-               <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-               <div className="relative group flex flex-col items-center">
-                 <Heart className="h-28 w-28 md:h-40 md:w-40 text-rose-500 fill-current animate-bounce group-hover:scale-110 transition-transform duration-1000" />
-                 <div className="absolute inset-0 bg-rose-500/20 rounded-full blur-[100px] animate-pulse" />
-               </div>
-               <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+             <div className="flex justify-center items-center gap-8 md:gap-16 pt-8 w-full max-w-2xl">
+               <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+               <Heart className="h-20 w-20 md:h-32 md:w-32 text-rose-500 fill-current animate-bounce" />
+               <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
              </div>
 
              <button
                onClick={() => setStage('intro')}
-               className="mt-24 px-12 py-5 rounded-full border border-white/5 text-[10px] uppercase tracking-[1.5em] text-white/40 hover:text-white/80 hover:bg-white/5 transition-all font-black shadow-2xl backdrop-blur-md"
+               className="mt-12 px-8 py-4 rounded-full border border-white/5 text-[8px] uppercase tracking-[1.2em] text-white/40 hover:text-white/80 transition-all font-black"
              >
-               Regresar al Inicio
+               Volver
              </button>
           </div>
         )}
       </div>
 
-      {/* Persistent Status Branding - Fixed Syntax Error */}
-      <div className="fixed bottom-8 left-8 z-50 flex items-center gap-6 opacity-20 hover:opacity-100 transition-all duration-1000">
-        <div className="flex gap-1 items-end h-4">
-          {[0.4, 0.8, 0.6, 1.0, 0.5].map((h, i) => (
-            <div 
-              key={i} 
-              className="w-[3px] bg-white animate-pulse" 
-              style={{ height: `${h*100}%`, animationDelay: `${i*0.3}s` }} 
-            />
-          ))}
-        </div>
-        <p className="text-[8px] uppercase tracking-[0.6em] text-white font-black border-l border-white/20 pl-6">
+      <div className="fixed bottom-6 left-6 z-50 flex items-center gap-4 opacity-20">
+        <p className="text-[7px] uppercase tracking-[0.5em] text-white font-black">
           LoveLink Engine
         </p>
       </div>

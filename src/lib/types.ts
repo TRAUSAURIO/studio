@@ -8,9 +8,15 @@ export interface ExperienceData {
   message: string;
   secretMessage: string;
   youtubeId: string;
+  imageUrl?: string;
   theme: ThemeType;
   particles: ParticleType;
   fontStyle: FontStyle;
+  // Font sizes in px
+  titleFontSize: number;
+  nameFontSize: number;
+  messageFontSize: number;
+  secretFontSize: number;
 }
 
 export const DEFAULT_EXPERIENCE: ExperienceData = {
@@ -19,7 +25,12 @@ export const DEFAULT_EXPERIENCE: ExperienceData = {
   message: 'Quería decirte lo mucho que significas para mí...',
   secretMessage: 'Eres mi mundo entero.',
   youtubeId: 'L_jWHffIx5E',
+  imageUrl: '',
   theme: 'midnight-romance',
   particles: 'gold-dust',
   fontStyle: 'cursive',
+  titleFontSize: 64,
+  nameFontSize: 32,
+  messageFontSize: 24,
+  secretFontSize: 128,
 };

@@ -14,9 +14,10 @@ interface CinematicTypewriterProps {
   text: string;
   onComplete?: () => void;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export function CinematicTypewriter({ text, onComplete, className }: CinematicTypewriterProps) {
+export function CinematicTypewriter({ text, onComplete, className, style }: CinematicTypewriterProps) {
   const [displayedText, setDisplayedText] = useState<string[]>([]);
   const [hearts, setHearts] = useState<Heart[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -50,16 +51,13 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
       setDisplayedText(prev => [...prev, char]);
       setCurrentIndex(prev => prev + 1);
       
-      // Dinámica de escritura emocional (acelera suavemente)
       if (currentDelayRef.current > 40) {
         currentDelayRef.current -= 4;
       }
 
-      // Pausas naturales en puntuación para realismo cinematográfico
       if (['.', '!', '?', ',', ';'].includes(char)) {
         currentDelayRef.current += 500;
         
-        // Efecto visual en pausas importantes
         const cursor = containerRef.current?.querySelector('.cinematic-cursor');
         if (cursor) {
           const rect = cursor.getBoundingClientRect();
@@ -90,7 +88,7 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
   }, [currentIndex, text]);
 
   return (
-    <div ref={containerRef} className={cn("relative inline-block w-full", className)}>
+    <div ref={containerRef} className={cn("relative inline-block w-full", className)} style={style}>
       {hearts.map(heart => (
         <svg
           key={heart.id}
@@ -117,7 +115,6 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
           >
             <span className="relative">
                {char === ' ' ? '\u00A0' : char}
-               {/* Sutil glow de tinta */}
                <span className="absolute inset-0 blur-[6px] opacity-20 text-romantic-accent pointer-events-none">
                  {char === ' ' ? '' : char}
                </span>
@@ -138,4 +135,3 @@ export function CinematicTypewriter({ text, onComplete, className }: CinematicTy
     </div>
   );
 }
-
