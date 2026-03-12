@@ -17,18 +17,42 @@
   body { @apply bg-[#020617] text-foreground overflow-x-hidden antialiased; }
 }
 
-/* --- NEON CINEMATIC UI --- */
+/* --- CINEMATIC LIGHTING --- */
+.film-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+}
+
+.lens-flare-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.flare {
+  position: absolute;
+  width: 150vw;
+  height: 200px;
+  background: linear-gradient(90deg, transparent, rgba(236, 72, 153, 0.05), rgba(251, 191, 36, 0.05), transparent);
+  transform: rotate(-35deg) translateY(-100%);
+  filter: blur(80px);
+  animation: flareMove 12s infinite linear;
+}
+
+@keyframes flareMove {
+  0% { transform: rotate(-35deg) translateY(-100%) translateX(-100%); }
+  100% { transform: rotate(-35deg) translateY(100%) translateX(100%); }
+}
+
+/* --- NEON TEXT --- */
 .neon-text-pink {
   text-shadow: 0 0 10px rgba(236, 72, 153, 0.5), 0 0 20px rgba(236, 72, 153, 0.3);
-}
-
-.neon-text-gold {
-  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.3);
-}
-
-.neon-border-active {
-  box-shadow: 0 0 15px rgba(236, 72, 153, 0.4), inset 0 0 5px rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .glass-card {
@@ -44,52 +68,62 @@
   transform: translateY(-2px) scale(1.01);
 }
 
-/* --- CINEMATIC OVERLAYS --- */
-.film-grain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 99;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.03;
-}
-
-/* --- ENVELOPE 3D --- */
-.envelope-3d {
+/* --- ADVANCED 3D ENVELOPE --- */
+.envelope-container {
   perspective: 2000px;
   width: 100%;
-  max-width: 450px;
-  height: 320px;
+  max-width: 500px;
+  height: 350px;
   position: relative;
   cursor: pointer;
+}
+
+.envelope-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
   transform-style: preserve-3d;
-  transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .envelope-base {
   width: 100%;
   height: 100%;
-  background: #ffffff;
+  background: #fdfdfd;
   position: absolute;
   bottom: 0;
   border-radius: 4px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
   z-index: 10;
   transform-style: preserve-3d;
-  background-image: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+  background-image: linear-gradient(135deg, #ffffff 0%, #f1f1f1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.envelope-base::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to top, rgba(0,0,0,0.05), transparent);
+  pointer-events: none;
 }
 
 .envelope-flap {
   width: 100%;
   height: 100%;
-  background: #fdfdfd;
+  background: #f9f9f9;
   position: absolute;
   top: 0;
   left: 0;
-  clip-path: polygon(0 0, 100% 0, 50% 50%);
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
   transform-origin: top;
   transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 20;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  border-top: 1px solid white;
 }
 
 .envelope-open .envelope-flap {
@@ -98,47 +132,83 @@
 }
 
 .wax-seal {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   background: radial-gradient(circle at 30% 30%, #be123c, #881337);
   border-radius: 50%;
   position: absolute;
-  top: 40%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 30;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.5s ease;
 }
 
 .wax-seal::after {
   content: "❤";
-  color: rgba(255,255,255,0.7);
-  font-size: 20px;
+  color: rgba(255,255,255,0.8);
+  font-size: 24px;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
 }
 
 .envelope-open .wax-seal {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(1.5);
-  filter: blur(10px);
+  transform: translate(-50%, -50%) scale(1.8) rotate(20deg);
+  filter: blur(15px);
 }
 
-/* --- ANIMATIONS --- */
-@keyframes inkAppear {
-  0% { opacity: 0; filter: blur(8px); transform: translateY(5px) scale(1.05); }
-  100% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
+.letter-content {
+  position: absolute;
+  width: 90%;
+  height: 80%;
+  background: white;
+  left: 5%;
+  bottom: 5%;
+  z-index: 8;
+  transform: translateY(0);
+  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.ink-reveal {
-  animation: inkAppear 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+.envelope-open .letter-content {
+  transform: translateY(-50%) scale(1.05);
 }
 
-/* --- CUSTOM SELECTS --- */
-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
+/* --- INK REVEAL ANIMATION --- */
+@keyframes inkFlow {
+  0% { opacity: 0; filter: blur(12px) brightness(1.5); transform: scale(1.1) translateY(5px); }
+  100% { opacity: 1; filter: blur(0) brightness(1); transform: scale(1) translateY(0); }
+}
+
+.ink-reveal-char {
+  display: inline-block;
+  animation: inkFlow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* --- TEXTURES --- */
+.parchment-bg {
+  background-color: #f4ecd8;
+  background-image: 
+    url("https://www.transparenttextures.com/patterns/papyros.png"),
+    radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.05) 100%);
+  color: #2d1a12;
+}
+
+/* --- UTILS --- */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
 }
