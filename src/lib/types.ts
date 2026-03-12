@@ -1,6 +1,6 @@
-export type ThemeType = 'cinematic-love' | 'golden-hour' | 'midnight-romance' | 'parchment' | 'luxury-white' | 'deep-passion' | 'starlight-indigo';
-export type ParticleType = 'petals' | 'hearts' | 'stars' | 'snow' | 'glitter' | 'sparks';
-export type FontStyle = 'serif' | 'sans' | 'mono' | 'cursive';
+export type ThemeType = 'midnight-romance' | 'cinematic-love' | 'golden-hour' | 'starlit-night' | 'rose-garden' | 'romantic-aurora' | 'parchment' | 'luxury-white';
+export type ParticleType = 'gold-dust' | 'hearts' | 'petals' | 'stars' | 'snow' | 'glitter' | 'sparks';
+export type FontStyle = 'cursive' | 'parchment' | 'serif' | 'cinematic' | 'clean' | 'glow';
 
 export interface ExperienceData {
   title: string;
@@ -14,12 +14,12 @@ export interface ExperienceData {
 }
 
 export const DEFAULT_EXPERIENCE: ExperienceData = {
-  title: 'Para alguien especial',
+  title: 'Nuestra Eternidad',
   name: 'Mi Amor',
   message: 'Quería decirte lo mucho que significas para mí...',
   secretMessage: 'Eres mi mundo entero.',
   youtubeId: 'L_jWHffIx5E',
-  theme: 'cinematic-love',
-  particles: 'petals',
+  theme: 'midnight-romance',
+  particles: 'gold-dust',
   fontStyle: 'cursive',
 };

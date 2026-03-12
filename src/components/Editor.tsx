@@ -1,23 +1,21 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ExperienceData, DEFAULT_EXPERIENCE, ThemeType, ParticleType, FontStyle } from '@/lib/types';
 import { ROMANTIC_TEMPLATES } from '@/lib/templates';
 import { getSharableUrl } from '@/lib/encoding';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Button } from './ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Heart, Share2, Eye, Music, Sparkles, Wand2, Monitor, Smartphone } from 'lucide-react';
+import { Heart, Share2, Wand2, Monitor, Smartphone, Palette, Sparkles, Music, Type, MessageSquare } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Viewer } from './Viewer';
 import { cn } from '@/lib/utils';
 
 export function Editor() {
   const [data, setData] = useState<ExperienceData>(DEFAULT_EXPERIENCE);
-  const [showPreview, setShowPreview] = useState(false);
+  const [activeTab, setActiveTab] = useState<'content' | 'visual' | 'extra'>('content');
   const [isMobileView, setIsMobileView] = useState(false);
 
   const updateField = (field: keyof ExperienceData, value: any) => {
@@ -30,7 +28,7 @@ export function Editor() {
       setData(template);
       toast({
         title: "Escenografía Cargada",
-        description: `Se ha aplicado el diseño '${templateKey}' con éxito.`,
+        description: `Atmósfera '${templateKey}' aplicada con éxito.`,
       });
     }
   };
@@ -39,198 +37,226 @@ export function Editor() {
     const url = getSharableUrl(data);
     navigator.clipboard.writeText(url);
     toast({
-      title: "Enlace Eterno Generado",
-      description: "La URL ha sido copiada al portapapeles.",
+      title: "Enlace Eterno Copiado",
+      description: "La magia está lista para ser enviada.",
     });
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-50 flex flex-col md:flex-row overflow-hidden">
-      {/* Sidebar Editor (40%) */}
-      <div className="w-full md:w-[420px] lg:w-[480px] p-6 md:p-8 overflow-y-auto h-screen border-r border-white/5 bg-slate-900/40 backdrop-blur-3xl z-50">
-        <header className="mb-10 flex items-center gap-4">
-          <div className="p-3 bg-gradient-to-br from-pink-500 to-rose-700 rounded-xl shadow-xl shadow-pink-500/10">
-            <Heart className="h-6 w-6 text-white fill-current" />
+    <div className="min-h-screen bg-[#020617] text-slate-50 flex flex-col md:flex-row overflow-hidden font-sans">
+      {/* --- NEON EDITOR SIDEBAR (40%) --- */}
+      <div className="w-full md:w-[450px] p-6 md:p-8 overflow-y-auto h-screen border-r border-white/5 bg-[#020617] relative z-50">
+        
+        {/* Logo Branding */}
+        <header className="mb-10 flex items-center gap-3">
+          <div className="relative">
+            <Heart className="h-7 w-7 text-pink-500 fill-current animate-pulse-slow" />
+            <div className="absolute inset-0 bg-pink-500/30 blur-xl rounded-full" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">LoveLink</h1>
-            <p className="text-[9px] text-pink-400 uppercase tracking-[0.4em] font-medium">Emotion Engine v2026</p>
+            <h1 className="text-xl font-bold tracking-tight text-white neon-text-pink">LoveLink</h1>
+            <p className="text-[8px] text-pink-400 uppercase tracking-[0.4em] font-medium opacity-70">Emotion Engine v2026.01</p>
           </div>
         </header>
 
-        <Tabs defaultValue="content" className="space-y-8">
-          <TabsList className="grid grid-cols-3 w-full bg-black/20 p-1 rounded-lg">
-            <TabsTrigger value="content" className="text-xs uppercase tracking-widest py-2">Contenido</TabsTrigger>
-            <TabsTrigger value="visual" className="text-xs uppercase tracking-widest py-2">Visual</TabsTrigger>
-            <TabsTrigger value="extra" className="text-xs uppercase tracking-widest py-2">Extra</TabsTrigger>
-          </TabsList>
+        {/* Cinematic Tabs */}
+        <div className="flex bg-white/5 p-1 rounded-2xl mb-8 gap-1">
+          {(['content', 'visual', 'extra'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={cn(
+                "flex-1 py-3 px-4 rounded-xl text-[10px] uppercase tracking-[0.2em] font-bold transition-all duration-300",
+                activeTab === tab 
+                  ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white neon-border-active" 
+                  : "text-slate-500 hover:text-slate-300 hover:bg-white/5"
+              )}
+            >
+              {tab === 'content' && 'Contenido'}
+              {tab === 'visual' && 'Visual'}
+              {tab === 'extra' && 'Extra'}
+            </button>
+          ))}
+        </div>
 
-          <TabsContent value="content" className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
-            <div className="space-y-4">
-              <Label className="text-[10px] uppercase tracking-[0.2em] text-slate-500">Escenografías Curadas</Label>
-              <div className="grid grid-cols-2 gap-3">
-                {Object.keys(ROMANTIC_TEMPLATES).map((key) => (
-                  <button
-                    key={key}
-                    onClick={() => loadTemplate(key)}
-                    className={cn(
-                      "p-4 rounded-xl border transition-all text-left group relative overflow-hidden",
-                      data.title === ROMANTIC_TEMPLATES[key].title 
-                        ? "bg-pink-500/10 border-pink-500/50 shadow-lg shadow-pink-500/5" 
-                        : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
-                    )}
+        {/* Tab Content Panels */}
+        <div className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
+          
+          {activeTab === 'content' && (
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <Label className="text-[10px] uppercase tracking-[0.2em] text-slate-500 flex items-center gap-2">
+                  <Wand2 className="h-3 w-3 text-pink-500" /> Escenografías Curadas
+                </Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {Object.keys(ROMANTIC_TEMPLATES).slice(0, 6).map((key) => (
+                    <button
+                      key={key}
+                      onClick={() => loadTemplate(key)}
+                      className={cn(
+                        "p-3 rounded-xl border text-left transition-all glass-card",
+                        data.title === ROMANTIC_TEMPLATES[key].title ? "border-pink-500/50 bg-pink-500/10" : "border-white/5"
+                      )}
+                    >
+                      <p className="text-[10px] font-bold text-white capitalize">{key.replace('-', ' ')}</p>
+                      <p className="text-[8px] text-slate-500 uppercase">Premium</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-4 pt-4 border-t border-white/5">
+                <div className="space-y-2">
+                  <Label className="text-[11px] text-slate-400 flex items-center gap-2">
+                    <MessageSquare className="h-3 w-3 text-pink-400" /> Título de la Obra
+                  </Label>
+                  <Input
+                    value={data.title}
+                    onChange={e => updateField('title', e.target.value)}
+                    className="bg-white/5 border-white/10 h-11 focus:border-pink-500/50 transition-all rounded-xl"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[11px] text-slate-400">👤 Destinatario</Label>
+                  <Input
+                    value={data.name}
+                    onChange={e => updateField('name', e.target.value)}
+                    className="bg-white/5 border-white/10 h-11 rounded-xl"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-[11px] text-slate-400">✒️ Mensaje Literario</Label>
+                  <Textarea
+                    value={data.message}
+                    onChange={e => updateField('message', e.target.value)}
+                    className="min-h-[160px] bg-white/5 border-white/10 leading-relaxed resize-none rounded-xl"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'visual' && (
+            <div className="space-y-6">
+              <div className="glass-card p-5 rounded-2xl space-y-4">
+                <div className="space-y-2">
+                  <Label className="text-[11px] text-slate-400 flex items-center gap-2">
+                    <Palette className="h-3 w-3 text-purple-400" /> Atmósfera Cromática
+                  </Label>
+                  <select 
+                    value={data.theme} 
+                    onChange={e => updateField('theme', e.target.value as ThemeType)}
+                    className="w-full bg-black/40 border border-white/10 h-12 rounded-xl px-4 text-sm focus:outline-none focus:border-purple-500 transition-all text-slate-200"
                   >
-                    <p className="text-[11px] font-bold capitalize text-white mb-0.5">{key.replace('-', ' ')}</p>
-                    <p className="text-[9px] text-slate-500 uppercase tracking-tighter">Diseño Curado</p>
-                  </button>
-                ))}
+                    <option value="midnight-romance">🌑 Midnight Romance</option>
+                    <option value="cinematic-love">🎬 Cinematic Love</option>
+                    <option value="golden-hour">🌅 Golden Hour</option>
+                    <option value="starlit-night">🌌 Noche Estrellada</option>
+                    <option value="rose-garden">🌹 Jardín de Rosas</option>
+                    <option value="romantic-aurora">🌈 Aurora Romántica</option>
+                    <option value="parchment">📜 Ancient Parchment</option>
+                    <option value="luxury-white">💎 Luxury White</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-[11px] text-slate-400 flex items-center gap-2">
+                    <Sparkles className="h-3 w-3 text-yellow-400" /> Partículas de Ambiente
+                  </Label>
+                  <select 
+                    value={data.particles} 
+                    onChange={e => updateField('particles', e.target.value as ParticleType)}
+                    className="w-full bg-black/40 border border-white/10 h-12 rounded-xl px-4 text-sm focus:outline-none focus:border-yellow-500 transition-all text-slate-200"
+                  >
+                    <option value="gold-dust">✨ Polvo Dorado</option>
+                    <option value="hearts">💓 Corazones Pulsantes</option>
+                    <option value="petals">🌸 Pétalos de Rosa</option>
+                    <option value="stars">⭐ Estrellas Twinkling</option>
+                    <option value="snow">❄️ Copos de Nieve</option>
+                    <option value="glitter">💎 Brillos Cinematográficos</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-[11px] text-slate-400 flex items-center gap-2">
+                    <Type className="h-3 w-3 text-blue-400" /> Tipografía de la Carta
+                  </Label>
+                  <select 
+                    value={data.fontStyle} 
+                    onChange={e => updateField('fontStyle', e.target.value as FontStyle)}
+                    className="w-full bg-black/40 border border-white/10 h-12 rounded-xl px-4 text-sm focus:outline-none focus:border-blue-500 transition-all text-slate-200"
+                  >
+                    <option value="cursive">🖋️ Escritura a Mano</option>
+                    <option value="parchment">📜 Ancient Scroll</option>
+                    <option value="serif">🏛️ Serif Clásica</option>
+                    <option value="cinematic">🎥 Cinematic Glow</option>
+                    <option value="clean">⚪ Minimal Clean</option>
+                    <option value="glow">🔥 Romantic Blaze</option>
+                  </select>
+                </div>
               </div>
             </div>
+          )}
 
-            <div className="space-y-4 pt-4 border-t border-white/5">
-              <div className="space-y-2">
-                <Label className="text-xs text-slate-400">Título de la Obra</Label>
-                <Input
-                  value={data.title}
-                  onChange={e => updateField('title', e.target.value)}
-                  placeholder="Nuestra Eternidad..."
-                  className="bg-black/20 border-white/10 h-12 focus:border-pink-500/50"
-                />
+          {activeTab === 'extra' && (
+            <div className="space-y-6">
+              <div className="glass-card p-5 rounded-2xl space-y-5">
+                <div className="space-y-2">
+                  <Label className="text-[11px] text-slate-400 flex items-center gap-2">
+                    <Heart className="h-3 w-3 text-red-500" /> Mensaje Secreto (Revelación)
+                  </Label>
+                  <Input
+                    value={data.secretMessage}
+                    onChange={e => updateField('secretMessage', e.target.value)}
+                    placeholder="Lo que el alma calla..."
+                    className="bg-black/20 border-white/10 h-11 rounded-xl"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-[11px] text-slate-400 flex items-center gap-2">
+                    <Music className="h-3 w-3 text-green-400" /> Banda Sonora (YouTube ID)
+                  </Label>
+                  <Input
+                    value={data.youtubeId}
+                    onChange={e => updateField('youtubeId', e.target.value)}
+                    placeholder="L_jWHffIx5E"
+                    className="bg-black/20 border-white/10 h-11 rounded-xl"
+                  />
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label className="text-xs text-slate-400">Destinatario</Label>
-                <Input
-                  value={data.name}
-                  onChange={e => updateField('name', e.target.value)}
-                  placeholder="Su nombre..."
-                  className="bg-black/20 border-white/10 h-12"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label className="text-xs text-slate-400">Mensaje Literario</Label>
-                <Textarea
-                  value={data.message}
-                  onChange={e => updateField('message', e.target.value)}
-                  placeholder="Escribe desde el alma..."
-                  className="min-h-[180px] bg-black/20 border-white/10 leading-relaxed resize-none"
-                />
+              <div className="pt-6">
+                <Button 
+                  onClick={copyUrl}
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold h-14 rounded-2xl shadow-xl shadow-pink-500/20 active:scale-[0.98] transition-all flex gap-3"
+                >
+                  <Share2 className="h-5 w-5" /> GENERAR ENLACE ETERNO
+                </Button>
               </div>
             </div>
-          </TabsContent>
+          )}
+        </div>
 
-          <TabsContent value="visual" className="space-y-6 animate-in fade-in slide-in-from-left-4 duration-500">
-            <div className="space-y-2">
-              <Label className="text-xs text-slate-400">Atmósfera Cromática</Label>
-              <Select value={data.theme} onValueChange={v => updateField('theme', v as ThemeType)}>
-                <SelectTrigger className="bg-black/20 border-white/10 h-12">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="cinematic-love">🎬 Cinematic Love</SelectItem>
-                  <SelectItem value="luxury-white">💎 Luxury White</SelectItem>
-                  <SelectItem value="midnight-romance">🌑 Midnight Romance</SelectItem>
-                  <SelectItem value="golden-hour">🌅 Golden Hour</SelectItem>
-                  <SelectItem value="deep-passion">🌹 Deep Passion</SelectItem>
-                  <SelectItem value="starlight-indigo">🌌 Starlight Indigo</SelectItem>
-                  <SelectItem value="parchment">📜 Ancient Parchment</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-xs text-slate-400">Partículas de Ambiente</Label>
-              <Select value={data.particles} onValueChange={v => updateField('particles', v as ParticleType)}>
-                <SelectTrigger className="bg-black/20 border-white/10 h-12">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="petals">Pétalos de Rosa</SelectItem>
-                  <SelectItem value="hearts">Corazones Pulsantes</SelectItem>
-                  <SelectItem value="stars">Estrellas Twinkling</SelectItem>
-                  <SelectItem value="glitter">Polvo Dorado</SelectItem>
-                  <SelectItem value="snow">Nieve Cinematic</SelectItem>
-                  <SelectItem value="sparks">Chispas de Luz</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-xs text-slate-400">Tipografía de la Carta</Label>
-              <Select value={data.fontStyle} onValueChange={v => updateField('fontStyle', v as FontStyle)}>
-                <SelectTrigger className="bg-black/20 border-white/10 h-12">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="cursive">Escritura a Mano Elegante</SelectItem>
-                  <SelectItem value="serif">Serif Clásica (Playfair)</SelectItem>
-                  <SelectItem value="sans">Minimalista Moderno</SelectItem>
-                  <SelectItem value="mono">Vintage Typewriter</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="extra" className="space-y-8 animate-in fade-in slide-in-from-left-4 duration-500">
-            <div className="space-y-2">
-              <Label className="text-xs text-slate-400">Mensaje Secreto (Revelación)</Label>
-              <Input
-                value={data.secretMessage}
-                onChange={e => updateField('secretMessage', e.target.value)}
-                placeholder="Un último detalle impactante..."
-                className="bg-black/20 border-white/10 h-12"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label className="text-xs text-slate-400">Banda Sonora (YouTube ID)</Label>
-              <Input
-                value={data.youtubeId}
-                onChange={e => updateField('youtubeId', e.target.value)}
-                placeholder="ID de Video..."
-                className="bg-black/20 border-white/10 h-12"
-              />
-            </div>
-
-            <div className="pt-6">
-              <Button 
-                onClick={copyUrl}
-                className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold h-14 shadow-2xl shadow-pink-600/20 active:scale-95 transition-all"
-              >
-                GENERAR ENLACE ETERNO
-              </Button>
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        <footer className="mt-auto pt-10 flex items-center justify-between opacity-20 hover:opacity-100 transition-opacity">
-          <p className="text-[10px] uppercase tracking-[0.5em]">Emotion Engine ©2026</p>
+        {/* Cinematic Footer */}
+        <footer className="mt-auto pt-12 flex items-center justify-between opacity-30">
+          <p className="text-[9px] uppercase tracking-[0.4em] font-light">Engine ©2026</p>
           <div className="flex gap-4">
-             <button onClick={() => setIsMobileView(false)}><Monitor className={cn("h-4 w-4", !isMobileView && "text-pink-500")} /></button>
-             <button onClick={() => setIsMobileView(true)}><Smartphone className={cn("h-4 w-4", isMobileView && "text-pink-500")} /></button>
+             <Monitor onClick={() => setIsMobileView(false)} className={cn("h-4 w-4 cursor-pointer hover:text-pink-500 transition-colors", !isMobileView && "text-pink-500 opacity-100")} />
+             <Smartphone onClick={() => setIsMobileView(true)} className={cn("h-4 w-4 cursor-pointer hover:text-pink-500 transition-colors", isMobileView && "text-pink-500 opacity-100")} />
           </div>
         </footer>
       </div>
 
-      {/* Main Preview Area (60%) */}
-      <div className="flex-1 relative bg-slate-950 flex items-center justify-center p-4 md:p-12">
+      {/* --- PREVIEW AREA (60%) --- */}
+      <div className="flex-1 relative bg-black flex items-center justify-center p-4 md:p-12 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-transparent pointer-events-none" />
+        
         <div className={cn(
-          "relative transition-all duration-700 ease-in-out shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-white/5 overflow-hidden",
+          "relative transition-all duration-1000 ease-in-out shadow-[0_0_100px_rgba(0,0,0,0.9)] border border-white/5 overflow-hidden",
           isMobileView ? "w-[375px] h-[667px] rounded-[3rem]" : "w-full h-full max-w-5xl rounded-[2.5rem]"
         )}>
           <Viewer data={data} isPreview={true} />
-          
-          <div className="absolute top-6 right-6 z-50 flex gap-2">
-             <Button
-               variant="secondary"
-               size="sm"
-               className="rounded-full bg-black/40 backdrop-blur-md text-white border-white/10"
-               onClick={() => setShowPreview(!showPreview)}
-             >
-               {showPreview ? "Cerrar Preview" : "Ver Película"}
-             </Button>
-          </div>
         </div>
       </div>
     </div>

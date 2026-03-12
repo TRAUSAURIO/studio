@@ -39,19 +39,22 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
       rotationSpeed: number;
       color: string;
       waveOffset: number;
-      pulse: number;
 
       constructor() {
-        this.x = Math.random() * canvas!.width;
+        this.reset();
         this.y = Math.random() * canvas!.height;
-        this.size = Math.random() * 5 + 2;
+      }
+
+      reset() {
+        this.x = Math.random() * canvas!.width;
+        this.y = -20;
+        this.size = Math.random() * 4 + 1;
         this.speedX = (Math.random() - 0.5) * 1;
-        this.speedY = Math.random() * 0.8 + 0.5;
-        this.opacity = Math.random() * 0.5 + 0.1;
+        this.speedY = Math.random() * 0.5 + 0.3;
+        this.opacity = Math.random() * 0.5 + 0.2;
         this.rotation = Math.random() * Math.PI * 2;
         this.rotationSpeed = (Math.random() - 0.5) * 0.02;
         this.waveOffset = Math.random() * Math.PI * 2;
-        this.pulse = Math.random() * 0.1;
         this.color = this.getColor();
       }
 
@@ -66,8 +69,10 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
             return '#ffffff';
           case 'snow':
             return '#f1f5f9';
-          case 'glitter':
+          case 'gold-dust':
             return '#fbbf24';
+          case 'glitter':
+            return '#38bdf8';
           case 'sparks':
             return '#fdba74';
           default:
@@ -93,19 +98,15 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
           ctx.bezierCurveTo(-this.size, -this.size, -this.size * 2, this.size / 3, 0, this.size);
           ctx.bezierCurveTo(this.size * 2, this.size / 3, this.size, -this.size, 0, 0);
           ctx.fill();
-        } else if (type === 'stars') {
-          const s = this.size * (1 + Math.sin(Date.now() * 0.005 + this.waveOffset) * 0.3);
+        } else if (type === 'stars' || type === 'gold-dust') {
+          const s = this.size * (1 + Math.sin(Date.now() * 0.005 + this.waveOffset) * 0.4);
           ctx.beginPath();
-          for (let i = 0; i < 5; i++) {
-            ctx.lineTo(Math.cos((18 + i * 72) / 180 * Math.PI) * s, -Math.sin((18 + i * 72) / 180 * Math.PI) * s);
-            ctx.lineTo(Math.cos((54 + i * 72) / 180 * Math.PI) * s * 0.5, -Math.sin((54 + i * 72) / 180 * Math.PI) * s * 0.5);
+          for (let i = 0; i < 4; i++) {
+            ctx.lineTo(Math.cos((i * 90) / 180 * Math.PI) * s, Math.sin((i * 90) / 180 * Math.PI) * s);
+            ctx.lineTo(Math.cos((45 + i * 90) / 180 * Math.PI) * s * 0.3, Math.sin((45 + i * 90) / 180 * Math.PI) * s * 0.3);
           }
           ctx.closePath();
           ctx.fill();
-        } else if (type === 'glitter') {
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = this.color;
-          ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
         } else {
           ctx.beginPath();
           ctx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
@@ -116,15 +117,13 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
       }
 
       update() {
-        // Wind / Drift logic
         const drift = Math.sin(Date.now() * 0.001 + this.waveOffset) * 0.5;
         this.x += this.speedX + drift;
         this.y += this.speedY;
         this.rotation += this.rotationSpeed;
 
         if (this.y > canvas!.height + 20) {
-          this.y = -20;
-          this.x = Math.random() * canvas!.width;
+          this.reset();
         }
         if (this.x > canvas!.width + 20) this.x = -20;
         if (this.x < -20) this.x = canvas!.width + 20;
@@ -133,7 +132,7 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
 
     const init = () => {
       particles = [];
-      const count = Math.min(Math.floor(window.innerWidth / 15), 120);
+      const count = Math.min(Math.floor(window.innerWidth / 15), 100);
       for (let i = 0; i < count; i++) {
         particles.push(new Particle());
       }

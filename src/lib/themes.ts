@@ -10,6 +10,13 @@ export interface ThemeColors {
 }
 
 export const THEMES: Record<ThemeType, ThemeColors> = {
+  'midnight-romance': {
+    primary: '#94a3b8',
+    background: 'radial-gradient(circle at top, #020617 0%, #1e1b4b 50%, #020617 100%)',
+    text: '#f8fafc',
+    accent: '#cbd5e1',
+    overlay: 'rgba(0,0,0,0.4)'
+  },
   'cinematic-love': {
     primary: '#ffd700',
     background: 'linear-gradient(180deg, #1e1b4b 0%, #4c1d95 50%, #831843 100%)',
@@ -23,11 +30,23 @@ export const THEMES: Record<ThemeType, ThemeColors> = {
     text: '#fffbeb',
     accent: '#fde68a',
   },
-  'midnight-romance': {
-    primary: '#94a3b8',
-    background: 'linear-gradient(to bottom, #020617, #1e1b4b, #312e81)',
-    text: '#f8fafc',
-    accent: '#cbd5e1',
+  'starlit-night': {
+    primary: '#e0e7ff',
+    background: 'radial-gradient(circle at top, #0f172a 0%, #1e293b 100%)',
+    text: '#f1f5f9',
+    accent: '#38bdf8',
+  },
+  'rose-garden': {
+    primary: '#f43f5e',
+    background: 'linear-gradient(135deg, #4c0519 0%, #881337 100%)',
+    text: '#fff1f2',
+    accent: '#fda4af',
+  },
+  'romantic-aurora': {
+    primary: '#2dd4bf',
+    background: 'linear-gradient(to bottom, #064e3b, #0d9488, #2dd4bf)',
+    text: '#f0fdfa',
+    accent: '#99f6e4',
   },
   'parchment': {
     primary: '#8b4513',
@@ -42,17 +61,5 @@ export const THEMES: Record<ThemeType, ThemeColors> = {
     text: '#111827',
     accent: '#ec4899',
     overlay: 'linear-gradient(to bottom, rgba(0,0,0,0.02), rgba(0,0,0,0.05))'
-  },
-  'deep-passion': {
-    primary: '#ffffff',
-    background: 'linear-gradient(45deg, #450a0a 0%, #991b1b 100%)',
-    text: '#fef2f2',
-    accent: '#fca5a5',
-  },
-  'starlight-indigo': {
-    primary: '#e0e7ff',
-    background: 'radial-gradient(circle at top, #312e81 0%, #1e1b4b 100%)',
-    text: '#f5f3ff',
-    accent: '#818cf8',
   }
 };

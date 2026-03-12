@@ -3,25 +3,45 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 0 0% 3.9%;
-  --primary: 0 0% 9%;
-  --primary-foreground: 0 0% 98%;
-  --border: 0 0% 89.8%;
-  --radius: 0.5rem;
-}
-
-.dark {
-  --background: 0 0% 3.9%;
-  --foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 0 0% 9%;
-  --border: 0 0% 14.9%;
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --primary: 326 100% 60%;
+  --primary-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --radius: 0.75rem;
+  --romantic-accent: #ec4899;
 }
 
 @layer base {
   * { @apply border-border; }
-  body { @apply bg-background text-foreground overflow-x-hidden antialiased; }
+  body { @apply bg-[#020617] text-foreground overflow-x-hidden antialiased; }
+}
+
+/* --- NEON CINEMATIC UI --- */
+.neon-text-pink {
+  text-shadow: 0 0 10px rgba(236, 72, 153, 0.5), 0 0 20px rgba(236, 72, 153, 0.3);
+}
+
+.neon-text-gold {
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.5), 0 0 20px rgba(251, 191, 36, 0.3);
+}
+
+.neon-border-active {
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.4), inset 0 0 5px rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px) scale(1.01);
 }
 
 /* --- CINEMATIC OVERLAYS --- */
@@ -31,47 +51,19 @@
   pointer-events: none;
   z-index: 99;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.05;
+  opacity: 0.03;
 }
 
-.lens-flare-container {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 5;
-  overflow: hidden;
-}
-
-.flare {
-  position: absolute;
-  width: 150vw;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  filter: blur(20px);
-  animation: flareAcross 12s linear infinite;
-}
-
-@keyframes flareAcross {
-  0% { transform: translateY(-100%) translateX(-100%) rotate(-35deg); opacity: 0; }
-  20% { opacity: 0.8; }
-  80% { opacity: 0.8; }
-  100% { transform: translateY(200%) translateX(200%) rotate(-35deg); opacity: 0; }
-}
-
-/* --- 3D ENVELOPE PHYSICS --- */
+/* --- ENVELOPE 3D --- */
 .envelope-3d {
   perspective: 2000px;
   width: 100%;
-  max-width: 500px;
-  height: 350px;
+  max-width: 450px;
+  height: 320px;
   position: relative;
   cursor: pointer;
   transform-style: preserve-3d;
   transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.envelope-3d:hover {
-  transform: translateY(-15px) rotateX(10deg);
 }
 
 .envelope-base {
@@ -81,10 +73,9 @@
   position: absolute;
   bottom: 0;
   border-radius: 4px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4);
   z-index: 10;
   transform-style: preserve-3d;
-  border: 1px solid rgba(0,0,0,0.05);
   background-image: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
 }
 
@@ -99,7 +90,6 @@
   transform-origin: top;
   transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 20;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .envelope-open .envelope-flap {
@@ -107,29 +97,9 @@
   z-index: 5;
 }
 
-.letter-inner {
-  width: 94%;
-  height: 100%;
-  background: white;
-  position: absolute;
-  bottom: 3%;
-  left: 3%;
-  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
-  z-index: 8;
-  padding: 40px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  border-radius: 2px;
-  transform-style: preserve-3d;
-}
-
-.envelope-open .letter-inner {
-  transform: translateY(-200px) scale(1.05) rotateX(-5deg);
-  z-index: 25;
-}
-
 .wax-seal {
-  width: 65px;
-  height: 65px;
+  width: 60px;
+  height: 60px;
   background: radial-gradient(circle at 30% 30%, #be123c, #881337);
   border-radius: 50%;
   position: absolute;
@@ -137,53 +107,38 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 30;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.4), inset 0 0 10px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.6s ease;
 }
 
 .wax-seal::after {
   content: "❤";
-  color: rgba(255,255,255,0.8);
-  font-size: 24px;
+  color: rgba(255,255,255,0.7);
+  font-size: 20px;
 }
 
 .envelope-open .wax-seal {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(1.4);
-  filter: blur(8px);
-}
-
-/* --- INK REVEAL EFFECT --- */
-.ink-reveal {
-  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.5);
   filter: blur(10px);
-  transform: translateY(10px) scale(1.1);
-  animation: inkAppear 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
+/* --- ANIMATIONS --- */
 @keyframes inkAppear {
-  0% { opacity: 0; filter: blur(10px); transform: translateY(10px) scale(1.1); }
+  0% { opacity: 0; filter: blur(8px); transform: translateY(5px) scale(1.05); }
   100% { opacity: 1; filter: blur(0); transform: translateY(0) scale(1); }
 }
 
-.letter-glow {
-  text-shadow: 0 0 15px rgba(255,255,255,0.3), 0 0 30px var(--romantic-accent);
+.ink-reveal {
+  animation: inkAppear 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-/* --- TAB ANIMATIONS --- */
-.tab-underline {
-  height: 2px;
-  background: var(--romantic-accent);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.bg-parchment {
-  background-color: #f4ecd8;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+/* --- CUSTOM SELECTS --- */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
 }
