@@ -152,32 +152,32 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
           <div className="flex flex-col items-center justify-center text-center space-y-16 py-10 animate-in fade-in zoom-in duration-1500 px-6 w-full max-w-6xl h-full">
              <div className="relative flex flex-col items-center w-full">
                {/* Background Emotional Glow */}
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] blur-[180px] bg-romantic-accent/40 animate-pulse rounded-full pointer-events-none" />
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] blur-[180px] bg-romantic-accent/30 animate-pulse rounded-full pointer-events-none" />
                
-               <div className="relative flex flex-col items-center space-y-12 md:space-y-20">
-                 <p className="text-pink-300 uppercase tracking-[2.5em] text-[10px] md:text-[13px] font-black opacity-60 leading-tight">
+               <div className="relative flex flex-col items-center space-y-12 md:space-y-24">
+                 <p className="text-pink-300 uppercase tracking-[2.5em] text-[10px] md:text-[14px] font-black opacity-60 leading-tight">
                    LO QUE EL CORAZÓN YA SABÍA
                  </p>
                  
-                 <h2 className="text-6xl md:text-9xl lg:text-[14rem] font-cursive text-white drop-shadow-[0_0_80px_rgba(255,255,255,0.6)] leading-tight italic select-none">
+                 <h2 className="text-6xl md:text-9xl lg:text-[16rem] font-cursive text-white drop-shadow-[0_0_80px_rgba(255,255,255,0.5)] leading-tight italic select-none">
                    "{data.secretMessage}"
                  </h2>
                </div>
              </div>
              
-             {/* Center Heart Decoration */}
-             <div className="flex justify-center items-center gap-10 md:gap-20 pt-8 w-full max-w-3xl">
-               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+             {/* Center Heart Decoration - More refined lines */}
+             <div className="flex justify-center items-center gap-10 md:gap-24 pt-12 w-full max-w-4xl">
+               <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                <div className="relative group flex flex-col items-center">
-                 <Heart className="h-24 w-24 md:h-32 md:w-32 text-rose-500 fill-current animate-bounce group-hover:scale-110 transition-transform duration-700" />
-                 <div className="absolute inset-0 bg-rose-500/30 rounded-full blur-[80px] animate-pulse" />
+                 <Heart className="h-28 w-28 md:h-40 md:w-40 text-rose-500 fill-current animate-bounce group-hover:scale-110 transition-transform duration-1000" />
+                 <div className="absolute inset-0 bg-rose-500/20 rounded-full blur-[100px] animate-pulse" />
                </div>
-               <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+               <div className="flex-1 h-[2px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
              </div>
 
              <button
                onClick={() => setStage('intro')}
-               className="mt-20 px-10 py-4 rounded-full border border-white/5 text-[9px] uppercase tracking-[1.2em] text-white/30 hover:text-white/60 hover:bg-white/5 transition-all font-black shadow-lg"
+               className="mt-24 px-12 py-5 rounded-full border border-white/5 text-[10px] uppercase tracking-[1.5em] text-white/40 hover:text-white/80 hover:bg-white/5 transition-all font-black shadow-2xl backdrop-blur-md"
              >
                Regresar al Inicio
              </button>
@@ -185,11 +185,15 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
         )}
       </div>
 
-      {/* Persistent Status Branding */}
+      {/* Persistent Status Branding - Fixed Syntax Error */}
       <div className="fixed bottom-8 left-8 z-50 flex items-center gap-6 opacity-20 hover:opacity-100 transition-all duration-1000">
         <div className="flex gap-1 items-end h-4">
           {[0.4, 0.8, 0.6, 1.0, 0.5].map((h, i) => (
-            <div key={i} className="w-[3px] bg-white animate-pulse" style={{ height: `${h*100}%`, animationDelay: `${i*0.3}s` }} />
+            <div 
+              key={i} 
+              className="w-[3px] bg-white animate-pulse" 
+              style={{ height: `${h*100}%`, animationDelay: `${i*0.3}s` }} 
+            />
           ))}
         </div>
         <p className="text-[8px] uppercase tracking-[0.6em] text-white font-black border-l border-white/20 pl-6">
