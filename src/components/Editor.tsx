@@ -9,7 +9,8 @@ import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
-import { Heart, Share2, Wand2, Monitor, Smartphone, Palette, Sparkles, Music, Type, MessageSquare, CheckCircle2, Image as ImageIcon } from 'lucide-react';
+import { Switch } from './ui/switch';
+import { Heart, Share2, Wand2, Monitor, Smartphone, Palette, Sparkles, Music, Type, MessageSquare, Image as ImageIcon, User, Calendar, Sliders } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Viewer } from './Viewer';
 import { cn } from '@/lib/utils';
@@ -117,7 +118,7 @@ export function Editor() {
               <div className="space-y-6 pt-6 border-t border-white/5">
                 <div className="space-y-3">
                   <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                    <MessageSquare className="h-3 w-3 text-pink-500" /> Título
+                    <MessageSquare className="h-3 w-3 text-pink-500" /> Título de la Carta
                   </Label>
                   <Input
                     value={data.title}
@@ -126,7 +127,9 @@ export function Editor() {
                   />
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">👤 Dedicado a</Label>
+                  <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
+                    <User className="h-3 w-3 text-pink-500" /> Dedicado a
+                  </Label>
                   <Input
                     value={data.name}
                     onChange={e => updateField('name', e.target.value)}
@@ -273,29 +276,94 @@ export function Editor() {
 
           {activeTab === 'extra' && (
             <div className="space-y-8">
-              <div className="glass-card p-6 rounded-3xl space-y-6 border-white/10 shadow-xl">
-                <div className="space-y-3">
-                  <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                    <Heart className="h-3 w-3 text-red-500" /> Susurro Final
+              <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-xl">
+                {/* Personalización de Mensaje */}
+                <div className="space-y-6">
+                  <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
+                    <Sparkles className="h-4 w-4" /> La Revelación
                   </Label>
-                  <Input
-                    value={data.secretMessage}
-                    onChange={e => updateField('secretMessage', e.target.value)}
-                    placeholder="Lo que el alma susurra..."
-                    className="bg-black/20 border-white/10 h-14 rounded-xl px-4 italic"
-                  />
+                  <div className="space-y-3">
+                    <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
+                      <Heart className="h-3 w-3 text-red-500" /> Susurro Final (Mensaje Secreto)
+                    </Label>
+                    <Input
+                      value={data.secretMessage}
+                      onChange={e => updateField('secretMessage', e.target.value)}
+                      placeholder="Lo que el alma susurra..."
+                      className="bg-black/20 border-white/10 h-14 rounded-xl px-4 italic"
+                    />
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
+                        <Sliders className="h-3 w-3 text-yellow-500" /> Intensidad de Explosión
+                      </Label>
+                      <span className="text-[10px] text-pink-500 font-mono">{data.confettiStrength}%</span>
+                    </div>
+                    <Slider 
+                      value={[data.confettiStrength]} 
+                      min={0} max={100} step={1}
+                      onValueChange={([val]) => updateField('confettiStrength', val)}
+                    />
+                  </div>
                 </div>
 
-                <div className="space-y-3">
-                  <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                    <Music className="h-3 w-3 text-green-400" /> Música (YouTube ID)
+                {/* Firma y Fecha */}
+                <div className="space-y-6 pt-6 border-t border-white/5">
+                  <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
+                    <User className="h-4 w-4" /> Origen y Tiempo
                   </Label>
-                  <Input
-                    value={data.youtubeId}
-                    onChange={e => updateField('youtubeId', e.target.value)}
-                    placeholder="Ej: L_jWHffIx5E"
-                    className="bg-black/20 border-white/10 h-14 rounded-xl px-4"
-                  />
+                  <div className="space-y-3">
+                    <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
+                      ✍️ Tu Firma (Remitente)
+                    </Label>
+                    <Input
+                      value={data.senderName}
+                      onChange={e => updateField('senderName', e.target.value)}
+                      placeholder="Tu nombre..."
+                      className="bg-black/20 border-white/10 h-12 rounded-xl px-4"
+                    />
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
+                        <Calendar className="h-3 w-3 text-blue-500" /> Mostrar Fecha Especial
+                      </Label>
+                      <Switch 
+                        checked={data.showDate} 
+                        onCheckedChange={checked => updateField('showDate', checked)} 
+                      />
+                    </div>
+                    {data.showDate && (
+                      <Input
+                        type="date"
+                        value={data.specialDate}
+                        onChange={e => updateField('specialDate', e.target.value)}
+                        className="bg-black/20 border-white/10 h-12 rounded-xl px-4 text-slate-200"
+                      />
+                    )}
+                  </div>
+                </div>
+
+                {/* Multimedia */}
+                <div className="space-y-6 pt-6 border-t border-white/5">
+                  <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
+                    <Music className="h-4 w-4" /> Melodía de Fondo
+                  </Label>
+                  <div className="space-y-3">
+                    <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
+                      <Music className="h-3 w-3 text-green-400" /> YouTube ID
+                    </Label>
+                    <Input
+                      value={data.youtubeId}
+                      onChange={e => updateField('youtubeId', e.target.value)}
+                      placeholder="Ej: L_jWHffIx5E"
+                      className="bg-black/20 border-white/10 h-14 rounded-xl px-4"
+                    />
+                    <p className="text-[9px] text-slate-500 px-2 italic">Solo ingresa el código después de v= en la URL.</p>
+                  </div>
                 </div>
               </div>
 
@@ -304,7 +372,7 @@ export function Editor() {
                   onClick={copyUrl}
                   className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black text-xs h-16 rounded-2xl shadow-xl shadow-pink-500/30 flex gap-3 uppercase tracking-[0.2em] shimmer-btn"
                 >
-                  <Share2 className="h-5 w-5" /> GENERAR ENLACE
+                  <Share2 className="h-5 w-5" /> GENERAR ENLACE ETERNO
                 </Button>
               </div>
             </div>
@@ -317,7 +385,7 @@ export function Editor() {
              <Monitor onClick={() => setIsMobileView(false)} className={cn("h-4 w-4 cursor-pointer hover:text-pink-500 transition-all", !isMobileView && "text-pink-500 scale-110")} />
              <Smartphone onClick={() => setIsMobileView(true)} className={cn("h-4 w-4 cursor-pointer hover:text-pink-500 transition-all", isMobileView && "text-pink-500 scale-110")} />
           </div>
-          <p className="text-[7px] uppercase tracking-[0.4em] font-black text-center">LoveLink Engine • v2026.02</p>
+          <p className="text-[7px] uppercase tracking-[0.4em] font-black text-center">LoveLink Engine • Premium 2026</p>
         </footer>
       </div>
 

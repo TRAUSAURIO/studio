@@ -6,7 +6,7 @@ import { ThemeWrapper } from './ThemeWrapper';
 import { ParticleCanvas } from './ParticleCanvas';
 import { CinematicTypewriter } from './CinematicTypewriter';
 import { YouTubePlayer } from './YouTubePlayer';
-import { Heart, Sparkles, ChevronRight, Star } from 'lucide-react';
+import { Heart, Sparkles, ChevronRight, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -142,6 +142,15 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
                 </div>
               )}
 
+              {data.showDate && (
+                <div className="mb-6 flex items-center justify-center gap-2 opacity-60">
+                  <Calendar className="h-4 w-4" />
+                  <span className="text-xs uppercase tracking-[0.4em] font-black">
+                    {new Date(data.specialDate).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </span>
+                </div>
+              )}
+
               <div 
                 className="relative z-10 leading-relaxed font-medium text-center"
                 style={{ fontSize: `${messageSize}px` }}
@@ -151,6 +160,13 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
                   onComplete={() => {}}
                 />
               </div>
+
+              {data.senderName && (
+                <div className="mt-8 text-center animate-in fade-in duration-1000 delay-1000">
+                  <p className="text-pink-500 font-cursive text-2xl">Con amor,</p>
+                  <p className="text-white font-serif font-bold tracking-widest uppercase mt-1">{data.senderName}</p>
+                </div>
+              )}
 
               <div className="mt-12 flex flex-col items-center border-t border-white/10 pt-10">
                 <button
@@ -196,7 +212,7 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
                onClick={() => setStage('intro')}
                className="mt-12 px-8 py-4 rounded-full border border-white/5 text-[8px] uppercase tracking-[1.2em] text-white/40 hover:text-white/80 transition-all font-black"
              >
-               Volver
+               Volver al Inicio
              </button>
           </div>
         )}
@@ -204,7 +220,7 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
 
       <div className="fixed bottom-6 left-6 z-50 flex items-center gap-4 opacity-20">
         <p className="text-[7px] uppercase tracking-[0.5em] text-white font-black">
-          LoveLink Engine
+          LoveLink Engine • Premium 2026
         </p>
       </div>
     </ThemeWrapper>

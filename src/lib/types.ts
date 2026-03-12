@@ -5,6 +5,8 @@ export type FontStyle = 'cursive' | 'parchment' | 'serif' | 'cinematic' | 'clean
 export interface ExperienceData {
   title: string;
   name: string;
+  senderName: string;
+  specialDate: string;
   message: string;
   secretMessage: string;
   youtubeId: string;
@@ -17,11 +19,16 @@ export interface ExperienceData {
   nameFontSize: number;
   messageFontSize: number;
   secretFontSize: number;
+  // Extra details
+  confettiStrength: number;
+  showDate: boolean;
 }
 
 export const DEFAULT_EXPERIENCE: ExperienceData = {
   title: 'Nuestra Eternidad',
   name: 'Mi Amor',
+  senderName: '',
+  specialDate: new Date().toISOString().split('T')[0],
   message: 'Quería decirte lo mucho que significas para mí...',
   secretMessage: 'Eres mi mundo entero.',
   youtubeId: 'L_jWHffIx5E',
@@ -33,4 +40,6 @@ export const DEFAULT_EXPERIENCE: ExperienceData = {
   nameFontSize: 32,
   messageFontSize: 24,
   secretFontSize: 128,
+  confettiStrength: 50,
+  showDate: false,
 };
