@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ExperienceData, DEFAULT_EXPERIENCE, ThemeType, ParticleType, FontStyle } from '@/lib/types';
 import { getSharableUrl } from '@/lib/encoding';
 import { Input } from './ui/input';
@@ -8,9 +8,9 @@ import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Button } from './ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Heart, Share2, Eye, Sparkles, Music, Type } from 'lucide-react';
+import { Heart, Share2, Eye, Music } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Viewer } from './Viewer';
 
@@ -51,7 +51,7 @@ export function Editor() {
 
           <TabsContent value="content" className="space-y-6">
             <div className="space-y-2">
-              <Label>Título Principal</Label>
+              <Label>Título de la Carta</Label>
               <Input
                 value={data.title}
                 onChange={e => updateField('title', e.target.value)}
@@ -61,7 +61,7 @@ export function Editor() {
             </div>
 
             <div className="space-y-2">
-              <Label>Nombre de la persona</Label>
+              <Label>Nombre de tu Persona Especial</Label>
               <Input
                 value={data.name}
                 onChange={e => updateField('name', e.target.value)}
@@ -71,17 +71,17 @@ export function Editor() {
             </div>
 
             <div className="space-y-2">
-              <Label>Mensaje Principal</Label>
+              <Label>Mensaje de Amor (con pausa dramática)</Label>
               <Textarea
                 value={data.message}
                 onChange={e => updateField('message', e.target.value)}
                 placeholder="Escribe tus palabras aquí..."
-                className="min-h-[120px] bg-slate-800 border-slate-700"
+                className="min-h-[150px] bg-slate-800 border-slate-700"
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Mensaje Secreto (aparece al final)</Label>
+              <Label>Frase Final (El Secreto)</Label>
               <Input
                 value={data.secretMessage}
                 onChange={e => updateField('secretMessage', e.target.value)}
@@ -93,48 +93,48 @@ export function Editor() {
 
           <TabsContent value="visual" className="space-y-6">
             <div className="space-y-2">
-              <Label>Tema Visual</Label>
+              <Label>Escenografía Cinematográfica</Label>
               <Select value={data.theme} onValueChange={v => updateField('theme', v as ThemeType)}>
                 <SelectTrigger className="bg-slate-800 border-slate-700">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="starry-night">Noche Estrellada</SelectItem>
-                  <SelectItem value="rose-garden">Jardín de Rosas</SelectItem>
-                  <SelectItem value="aurora">Aurora Romántica</SelectItem>
-                  <SelectItem value="galaxy">Galaxia de Amor</SelectItem>
-                  <SelectItem value="minimalist">Minimalista Elegante</SelectItem>
+                  <SelectItem value="parchment">📜 Pergamino con Sello de Cera</SelectItem>
+                  <SelectItem value="golden-roses">🌹 Marco de Rosas Doradas</SelectItem>
+                  <SelectItem value="love-galaxy">🌌 Galaxia Amorosa</SelectItem>
+                  <SelectItem value="minimal-glow">✨ Minimalismo Neón</SelectItem>
+                  <SelectItem value="vintage-ink">🖋 Vintage Tinta Azul</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label>Tipo de Partículas</Label>
+              <Label>Partículas de Ambiente</Label>
               <Select value={data.particles} onValueChange={v => updateField('particles', v as ParticleType)}>
                 <SelectTrigger className="bg-slate-800 border-slate-700">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="hearts">Corazones</SelectItem>
-                  <SelectItem value="stars">Estrellas</SelectItem>
-                  <SelectItem value="petals">Pétalos</SelectItem>
-                  <SelectItem value="snow">Copo de Nieve</SelectItem>
-                  <SelectItem value="glitter">Brillos</SelectItem>
+                  <SelectItem value="hearts">Corazones Voladores</SelectItem>
+                  <SelectItem value="stars">Estrellas Fugaces</SelectItem>
+                  <SelectItem value="petals">Pétalos Caídos</SelectItem>
+                  <SelectItem value="snow">Nieve Suave</SelectItem>
+                  <SelectItem value="glitter">Brillo Mágico</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label>Estilo de Fuente</Label>
+              <Label>Tipografía</Label>
               <Select value={data.fontStyle} onValueChange={v => updateField('fontStyle', v as FontStyle)}>
                 <SelectTrigger className="bg-slate-800 border-slate-700">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="serif">Elegante (Serif)</SelectItem>
-                  <SelectItem value="sans">Limpio (Sans)</SelectItem>
+                  <SelectItem value="cursive">Escritura a Mano (Recomendado)</SelectItem>
+                  <SelectItem value="serif">Elegante Clásico</SelectItem>
+                  <SelectItem value="sans">Moderno Limpio</SelectItem>
                   <SelectItem value="mono">Máquina de Escribir</SelectItem>
-                  <SelectItem value="cursive">Manuscrito (Cursiva)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -142,39 +142,33 @@ export function Editor() {
 
           <TabsContent value="settings" className="space-y-6">
             <div className="space-y-2">
-              <Label>ID de Video YouTube (Música)</Label>
-              <div className="flex gap-2">
-                <Input
-                  value={data.youtubeId}
-                  onChange={e => updateField('youtubeId', e.target.value)}
-                  placeholder="ID del video..."
-                  className="bg-slate-800 border-slate-700"
-                />
-              </div>
-              <p className="text-xs text-slate-400">Pega el ID que aparece después de v= en el enlace de YouTube.</p>
+              <Label>ID de Música (YouTube)</Label>
+              <Input
+                value={data.youtubeId}
+                onChange={e => updateField('youtubeId', e.target.value)}
+                placeholder="ID de YouTube..."
+                className="bg-slate-800 border-slate-700"
+              />
+              <p className="text-[10px] text-slate-500 italic">Recomendamos: L_jWHffIx5E (Romantic Lofi)</p>
             </div>
 
             <Card className="bg-slate-800/30 border-slate-700 mt-8">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <Share2 className="h-4 w-4" /> Compartir Experiencia
+                  <Share2 className="h-4 w-4" /> Generar Carta
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white" onClick={copyUrl}>
-                  Generar enlace único
+                <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold" onClick={copyUrl}>
+                  OBTENER ENLACE MÁGICO
                 </Button>
-                <p className="text-[10px] text-center text-slate-500 uppercase tracking-widest">
-                  Sin bases de datos • Privacidad total • Solo tu enlace
+                <p className="text-[10px] text-center text-slate-500 uppercase tracking-widest leading-relaxed">
+                  Tu carta se codifica en el enlace.<br/>Nadie más puede verla sin él.
                 </p>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
-
-        <div className="mt-auto pt-8 border-t border-slate-800 hidden md:block">
-          <p className="text-xs text-slate-500 italic">"Las mejores cosas se comparten directamente."</p>
-        </div>
       </div>
 
       {/* Main Preview Area */}
@@ -182,21 +176,18 @@ export function Editor() {
         <div className="absolute top-6 left-1/2 -translate-x-1/2 z-50 flex gap-4">
            <Button
             variant="secondary"
-            className="rounded-full shadow-2xl opacity-70 group-hover:opacity-100 transition-opacity"
+            className="rounded-full shadow-2xl opacity-70 group-hover:opacity-100 transition-opacity bg-black/50 text-white border-white/10"
             onClick={() => setShowPreview(!showPreview)}
            >
-            {showPreview ? <><Music className="mr-2 h-4 w-4" /> Detener Previsualización</> : <><Eye className="mr-2 h-4 w-4" /> Previsualizar Pantalla Completa</>}
+            {showPreview ? <><Music className="mr-2 h-4 w-4" /> Parar</> : <><Eye className="mr-2 h-4 w-4" /> Previsualizar</>}
            </Button>
         </div>
 
-        {/* Real-time small preview or full viewer depending on screen size / preference */}
-        <div className="w-full h-full flex items-center justify-center p-4">
-          <div className="w-full h-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl shadow-black/50 bg-black relative">
+        <div className="w-full h-full flex items-center justify-center p-2 md:p-8">
+          <div className="w-full h-full max-w-6xl rounded-[2rem] overflow-hidden shadow-2xl shadow-black/80 bg-black relative border border-white/5">
              <Viewer data={data} isPreview={true} />
           </div>
         </div>
-
-        {/* Mobile preview toggle overlay if needed, but the current layout is good */}
       </div>
     </div>
   );

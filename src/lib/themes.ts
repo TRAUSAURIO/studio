@@ -5,37 +5,39 @@ export interface ThemeColors {
   background: string;
   text: string;
   accent: string;
+  secondary?: string;
 }
 
 export const THEMES: Record<ThemeType, ThemeColors> = {
-  'starry-night': {
-    primary: '#93c5fd',
-    background: 'linear-gradient(to bottom, #020617, #1e1b4b, #312e81)',
-    text: '#f8fafc',
-    accent: '#38bdf8',
+  'parchment': {
+    primary: '#8b4513',
+    background: '#f4ecd8',
+    text: '#2d1a12',
+    accent: '#d4af37',
+    secondary: '#cdaa6d'
   },
-  'rose-garden': {
-    primary: '#fb7185',
-    background: 'linear-gradient(to bottom, #450a0a, #881337, #be123c)',
+  'golden-roses': {
+    primary: '#d4af37',
+    background: 'linear-gradient(135deg, #450a0a 0%, #881337 100%)',
     text: '#fff1f2',
-    accent: '#f43f5e',
+    accent: '#fb7185',
   },
-  'aurora': {
-    primary: '#4ade80',
-    background: 'linear-gradient(to bottom, #064e3b, #065f46, #047857)',
-    text: '#ecfdf5',
-    accent: '#10b981',
-  },
-  'galaxy': {
+  'love-galaxy': {
     primary: '#c084fc',
-    background: 'linear-gradient(to bottom, #2e1065, #4c1d95, #581c87)',
+    background: 'radial-gradient(circle at center, #1e1b4b 0%, #020617 100%)',
     text: '#faf5ff',
     accent: '#a855f7',
   },
-  'minimalist': {
-    primary: '#d4af37',
-    background: 'linear-gradient(to bottom, #fafafa, #f5f5f5, #e5e5e5)',
-    text: '#171717',
-    accent: '#a16207',
+  'minimal-glow': {
+    primary: '#ffd700',
+    background: '#0a0a0a',
+    text: '#ffffff',
+    accent: '#ff69b4',
+  },
+  'vintage-ink': {
+    primary: '#1e293b',
+    background: '#e2e8f0',
+    text: '#0f172a',
+    accent: '#334155',
   },
 };
