@@ -13,7 +13,7 @@ import { Switch } from './ui/switch';
 import { 
   Heart, Share2, Wand2, Monitor, Smartphone, Palette, Sparkles, 
   Music, Type, MessageSquare, Image as ImageIcon, User, 
-  Calendar, Sliders, Waves, Volume2, PenTool, Clock 
+  Calendar, Waves, Volume2, PenTool
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Viewer } from './Viewer';
@@ -444,13 +444,6 @@ export function Editor() {
                             {sound === 'wind' && 'Viento'}
                           </p>
                         </div>
-                        {data.ambientSound === sound && sound !== 'none' && (
-                          <div className="absolute bottom-1 right-2 flex gap-[2px] items-end h-3">
-                            {[1,2,3,4].map(i => (
-                              <div key={i} className="w-[2px] bg-pink-500/40 animate-music-bar" style={{ height: `${Math.random()*100}%`, animationDelay: `${i*0.2}s` }} />
-                            ))}
-                          </div>
-                        )}
                       </button>
                     ))}
                   </div>

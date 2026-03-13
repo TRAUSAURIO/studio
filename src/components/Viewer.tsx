@@ -6,7 +6,7 @@ import { ThemeWrapper } from './ThemeWrapper';
 import { ParticleCanvas } from './ParticleCanvas';
 import { CinematicTypewriter } from './CinematicTypewriter';
 import { YouTubePlayer } from './YouTubePlayer';
-import { Heart, Sparkles, ChevronRight, Calendar, Volume2, Waves } from 'lucide-react';
+import { Heart, Sparkles, ChevronRight, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 

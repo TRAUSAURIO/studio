@@ -23,7 +23,7 @@ export function CinematicTypewriter({ text, onComplete, className, style }: Cine
   const [currentIndex, setCurrentIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   
-  const requestRef = useRef<number>(null);
+  const requestRef = useRef<number | null>(null);
   const lastUpdateTimeRef = useRef<number>(0);
   const currentDelayRef = useRef<number>(180);
 
@@ -85,7 +85,7 @@ export function CinematicTypewriter({ text, onComplete, className, style }: Cine
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [currentIndex, text]);
+  }, [currentIndex, text, onComplete]);
 
   return (
     <div ref={containerRef} className={cn("relative inline-block w-full", className)} style={style}>

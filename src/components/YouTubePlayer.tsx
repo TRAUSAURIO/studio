@@ -8,6 +8,13 @@ interface YouTubePlayerProps {
   videoId: string;
 }
 
+declare global {
+  interface Window {
+    YT: any;
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
+
 export function YouTubePlayer({ videoId }: YouTubePlayerProps) {
   const [isMuted, setIsMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -22,8 +29,8 @@ export function YouTubePlayer({ videoId }: YouTubePlayerProps) {
       firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
     }
 
-    (window as any).onYouTubeIframeAPIReady = () => {
-      playerRef.current = new (window as any).YT.Player('yt-player', {
+    window.onYouTubeIframeAPIReady = () => {
+      playerRef.current = new window.YT.Player('yt-player', {
         height: '0',
         width: '0',
         videoId: videoId,

@@ -29,16 +29,16 @@ export function ParticleCanvas({ type }: ParticleCanvasProps) {
     resize();
 
     class Particle {
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
-      opacity: number;
-      rotation: number;
-      rotationSpeed: number;
-      color: string;
-      waveOffset: number;
+      x: number = 0;
+      y: number = 0;
+      size: number = 0;
+      speedX: number = 0;
+      speedY: number = 0;
+      opacity: number = 0;
+      rotation: number = 0;
+      rotationSpeed: number = 0;
+      color: string = '';
+      waveOffset: number = 0;
 
       constructor() {
         this.reset();
