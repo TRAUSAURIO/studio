@@ -13,11 +13,13 @@ import { Switch } from './ui/switch';
 import { 
   Heart, Share2, Wand2, Monitor, Smartphone, Palette, Sparkles, 
   Music, Type, MessageSquare, Image as ImageIcon, User, 
-  Calendar, Waves, Volume2, PenTool, Youtube, Info
+  Calendar, Waves, Volume2, PenTool, Youtube, Info, Shield
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Viewer } from './Viewer';
+import { AdUnit } from './AdUnit';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export function Editor() {
   const [data, setData] = useState<ExperienceData>(DEFAULT_EXPERIENCE);
@@ -30,7 +32,6 @@ export function Editor() {
   };
 
   const handleYoutubeLink = (url: string) => {
-    // Regex para extraer ID de Youtube
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
     const videoId = (match && match[2].length === 11) ? match[2] : url;
@@ -140,6 +141,8 @@ export function Editor() {
                     className="bg-white/5 border-white/10 h-12 focus:border-pink-500/50 transition-all rounded-xl font-headline"
                   />
                 </div>
+                {/* Ad placement for Editor - Non-intrusive */}
+                <AdUnit slot="1234567890" className="opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
                 <div className="space-y-3">
                   <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
                     <User className="h-3 w-3 text-pink-500" /> Dedicado a
@@ -194,7 +197,6 @@ export function Editor() {
                     <option value="luxury-white">💎 Luxury White</option>
                   </select>
                 </div>
-
                 <div className="space-y-3">
                   <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
                     <Sparkles className="h-3 w-3 text-yellow-400" /> Partículas
@@ -212,30 +214,12 @@ export function Editor() {
                     <option value="glitter">💎 Brillos</option>
                   </select>
                 </div>
-
-                <div className="space-y-3">
-                  <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                    <Type className="h-3 w-3 text-blue-400" /> Caligrafía
-                  </Label>
-                  <select 
-                    value={data.fontStyle} 
-                    onChange={e => updateField('fontStyle', e.target.value as FontStyle)}
-                    className="w-full bg-black/40 border border-white/10 h-12 rounded-xl px-4 text-sm focus:outline-none focus:border-blue-500 transition-all text-slate-200"
-                  >
-                    <option value="cursive">🖋️ Cursiva Elegante</option>
-                    <option value="parchment">📜 Pergamino</option>
-                    <option value="serif">🏛️ Serif Clásica</option>
-                    <option value="cinematic">🎥 Cinematic</option>
-                    <option value="clean">⚪ Limpio</option>
-                  </select>
-                </div>
               </div>
-
+              <AdUnit slot="0987654321" format="rectangle" />
               <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-xl">
                 <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                   <Type className="h-4 w-4" /> Tamaños de Fuente
                 </Label>
-                
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <Label className="text-[10px] text-slate-400 uppercase font-bold">Título</Label>
@@ -247,7 +231,6 @@ export function Editor() {
                     onValueChange={([val]) => updateField('titleFontSize', val)}
                   />
                 </div>
-
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
                     <Label className="text-[10px] text-slate-400 uppercase font-bold">Dedicado a</Label>
@@ -259,30 +242,6 @@ export function Editor() {
                     onValueChange={([val]) => updateField('nameFontSize', val)}
                   />
                 </div>
-
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-[10px] text-slate-400 uppercase font-bold">Mensaje Principal</Label>
-                    <span className="text-[10px] text-pink-500 font-mono">{data.messageFontSize}px</span>
-                  </div>
-                  <Slider 
-                    value={[data.messageFontSize]} 
-                    min={10} max={48} step={1}
-                    onValueChange={([val]) => updateField('messageFontSize', val)}
-                  />
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-[10px] text-slate-400 uppercase font-bold">Mensaje Secreto</Label>
-                    <span className="text-[10px] text-pink-500 font-mono">{data.secretFontSize}px</span>
-                  </div>
-                  <Slider 
-                    value={[data.secretFontSize]} 
-                    min={40} max={300} step={2}
-                    onValueChange={([val]) => updateField('secretFontSize', val)}
-                  />
-                </div>
               </div>
             </div>
           )}
@@ -291,198 +250,31 @@ export function Editor() {
             <div className="space-y-8">
               <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-pink-500/5 pointer-events-none" />
-                
-                {/* --- MÚSICA PERSONALIZADA --- */}
                 <div className="space-y-6 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <Youtube className="h-4 w-4" /> Banda Sonora
                   </Label>
                   <div className="space-y-3">
-                    <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                      Enlace de YouTube
-                    </Label>
-                    <div className="relative">
-                      <Input
-                        placeholder="https://www.youtube.com/watch?v=..."
-                        defaultValue={data.youtubeId ? `https://www.youtube.com/watch?v=${data.youtubeId}` : ''}
-                        onChange={e => handleYoutubeLink(e.target.value)}
-                        className="bg-black/40 border-white/10 h-14 rounded-xl px-4 pr-12 focus:ring-2 focus:ring-red-500/20"
-                      />
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                        <Youtube className="h-5 w-5 text-red-500/50" />
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-2 p-3 bg-white/5 rounded-lg border border-white/5">
-                      <Info className="h-3 w-3 text-pink-400 shrink-0 mt-0.5" />
-                      <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-relaxed">
-                        Pega el link de la canción que defina vuestra historia. Se reproducirá de fondo al abrir la carta.
-                      </p>
-                    </div>
+                    <Input
+                      placeholder="URL de YouTube..."
+                      defaultValue={data.youtubeId ? `https://www.youtube.com/watch?v=${data.youtubeId}` : ''}
+                      onChange={e => handleYoutubeLink(e.target.value)}
+                      className="bg-black/40 border-white/10 h-14 rounded-xl px-4"
+                    />
                   </div>
                 </div>
-
                 <div className="space-y-6 pt-6 border-t border-white/5 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <PenTool className="h-4 w-4" /> La Firma
                   </Label>
-                  <div className="space-y-3">
-                    <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                      De: Mi corazón, siempre tuyo…
-                    </Label>
-                    <Input
-                      value={data.senderName}
-                      onChange={e => updateField('senderName', e.target.value)}
-                      placeholder="Tu nombre o pseudónimo..."
-                      className="bg-black/40 border-white/10 h-14 rounded-xl px-4 italic focus:ring-2 focus:ring-pink-500/20"
-                    />
-                    {data.senderName && (
-                      <div className="mt-2 p-3 bg-white/5 rounded-lg border border-white/5 animate-in fade-in slide-in-from-top-1">
-                        <p className="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Vista previa firma:</p>
-                        <p className={cn(
-                          "text-lg",
-                          data.senderIsCursive ? "font-cursive text-pink-400" : "font-serif text-white"
-                        )}>
-                          {data.senderName}
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-3 bg-white/5 rounded-xl border border-white/5">
-                    <Label className="text-[11px] text-slate-300 font-bold flex items-center gap-2 cursor-pointer">
-                      <Type className="h-4 w-4 text-purple-400" /> ¿Firma manuscrita?
-                    </Label>
-                    <Switch 
-                      checked={data.senderIsCursive} 
-                      onCheckedChange={checked => updateField('senderIsCursive', checked)} 
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-6 pt-6 border-t border-white/5 relative">
-                  <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
-                    <Calendar className="h-4 w-4" /> Fecha Memorable
-                  </Label>
-                  
-                  <div className="flex items-center justify-between p-3 bg-white/5 rounded-xl border border-white/5 mb-4">
-                    <Label className="text-[11px] text-slate-300 font-bold cursor-pointer">Mostrar fecha en la carta</Label>
-                    <Switch 
-                      checked={data.showDate} 
-                      onCheckedChange={checked => updateField('showDate', checked)} 
-                    />
-                  </div>
-
-                  {data.showDate && (
-                    <div className="space-y-4 animate-in fade-in zoom-in-95">
-                      <Input
-                        type="date"
-                        value={data.specialDate}
-                        onChange={e => updateField('specialDate', e.target.value)}
-                        className="bg-black/40 border-white/10 h-14 rounded-xl px-4 text-slate-200"
-                      />
-                      <div className="flex flex-wrap gap-2">
-                        {[
-                          { label: 'Hoy', val: new Date().toISOString().split('T')[0] },
-                          { label: 'Aniversario', val: data.specialDate },
-                          { label: 'San Valentín', val: '2025-02-14' }
-                        ].map((chip) => (
-                          <button
-                            key={chip.label}
-                            onClick={() => updateField('specialDate', chip.val)}
-                            className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[9px] uppercase tracking-widest hover:bg-pink-500/10 hover:border-pink-500/30 transition-all"
-                          >
-                            {chip.label}
-                          </button>
-                        ))}
-                      </div>
-                      <p className="text-[10px] text-pink-400 font-medium italic text-center py-2 bg-pink-500/5 rounded-lg">
-                        "Nuestro momento • {new Date(data.specialDate).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}"
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="space-y-6 pt-6 border-t border-white/5 relative">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
-                      <Sparkles className="h-4 w-4" /> La Revelación
-                    </Label>
-                    <span className="text-[10px] text-pink-500 font-mono font-bold bg-pink-500/10 px-2 py-1 rounded">
-                      {data.confettiStrength}%
-                    </span>
-                  </div>
-
-                  <div className="space-y-3">
-                    <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                      <Heart className="h-3 w-3 text-red-500" /> Mensaje Secreto
-                    </Label>
-                    <Input
-                      value={data.secretMessage}
-                      onChange={e => updateField('secretMessage', e.target.value)}
-                      placeholder="Lo que el alma susurra..."
-                      className="bg-black/40 border-white/10 h-14 rounded-xl px-4 italic"
-                    />
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center text-[10px] text-slate-500 font-bold uppercase tracking-widest px-1">
-                      <span>Susurro</span>
-                      <span className="text-pink-400">Tormenta de Amor</span>
-                    </div>
-                    <Slider 
-                      value={[data.confettiStrength]} 
-                      min={0} max={100} step={1}
-                      onValueChange={([val]) => updateField('confettiStrength', val)}
-                      className="premium-slider"
-                    />
-                    <p className="text-[9px] text-slate-500 text-center italic">
-                      "{getIntensityLabel(data.confettiStrength)}: Una explosión {data.confettiStrength > 80 ? 'épica' : 'sutil'} de sentimientos."
-                    </p>
-                  </div>
-                </div>
-
-                <div className="space-y-6 pt-6 border-t border-white/5 relative">
-                  <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
-                    <Waves className="h-4 w-4" /> Ambiente Inmersivo
-                  </Label>
-                  
-                  <div className="grid grid-cols-2 gap-3">
-                    {(['none', 'heartbeat', 'rain', 'wind'] as const).map((sound) => (
-                      <button
-                        key={sound}
-                        onClick={() => updateField('ambientSound', sound)}
-                        className={cn(
-                          "p-4 rounded-xl border text-left transition-all relative overflow-hidden group",
-                          data.ambientSound === sound 
-                            ? "border-pink-500/50 bg-pink-500/10 shadow-[0_0_20px_rgba(236,72,153,0.1)]" 
-                            : "border-white/5 bg-white/5 hover:bg-white/10"
-                        )}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className={cn(
-                            "w-2 h-2 rounded-full",
-                            data.ambientSound === sound ? "bg-pink-500 animate-pulse" : "bg-slate-600"
-                          )} />
-                          <p className="text-[10px] font-bold text-white uppercase tracking-widest">
-                            {sound === 'none' && 'Silencio'}
-                            {sound === 'heartbeat' && 'Latidos'}
-                            {sound === 'rain' && 'Lluvia'}
-                            {sound === 'wind' && 'Viento'}
-                          </p>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-center gap-3 p-4 bg-yellow-500/5 border border-yellow-500/10 rounded-xl">
-                    <Volume2 className="h-4 w-4 text-yellow-500 shrink-0" />
-                    <p className="text-[8px] text-yellow-200/60 uppercase tracking-widest leading-relaxed">
-                      El sonido se activará tras la primera interacción del destinatario por políticas de seguridad del navegador.
-                    </p>
-                  </div>
+                  <Input
+                    value={data.senderName}
+                    onChange={e => updateField('senderName', e.target.value)}
+                    placeholder="De: Tu corazón..."
+                    className="bg-black/40 border-white/10 h-14 rounded-xl px-4 italic"
+                  />
                 </div>
               </div>
-
               <div className="pt-4">
                 <Button 
                   onClick={copyUrl}
@@ -496,6 +288,11 @@ export function Editor() {
         </div>
 
         <footer className="mt-8 pt-6 flex flex-col items-center gap-4 opacity-40 border-t border-white/5">
+          <div className="flex gap-4 mb-2">
+             <Link href="/privacy" className="text-[8px] uppercase tracking-widest hover:text-pink-500 transition-colors flex items-center gap-1">
+               <Shield className="h-3 w-3" /> Privacidad
+             </Link>
+          </div>
           <div className="flex gap-6">
              <Monitor onClick={() => setIsMobileView(false)} className={cn("h-4 w-4 cursor-pointer hover:text-pink-500 transition-all", !isMobileView && "text-pink-500 scale-110")} />
              <Smartphone onClick={() => setIsMobileView(true)} className={cn("h-4 w-4 cursor-pointer hover:text-pink-500 transition-all", isMobileView && "text-pink-500 scale-110")} />
@@ -506,7 +303,6 @@ export function Editor() {
 
       <div className="flex-1 relative bg-[#01040f] flex items-center justify-center p-4 md:p-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/10 via-transparent to-purple-900/10 pointer-events-none" />
-        
         <div className={cn(
           "relative transition-all duration-700 ease-in-out shadow-2xl border border-white/5 overflow-hidden flex items-center justify-center",
           isMobileView ? "w-[360px] h-[740px] rounded-[3rem]" : "w-full h-full max-w-6xl rounded-[2.5rem]",
