@@ -25,7 +25,6 @@ export function Editor() {
   const [data, setData] = useState<ExperienceData>(DEFAULT_EXPERIENCE);
   const [activeTab, setActiveTab] = useState<'content' | 'visual' | 'extra'>('content');
   const [isMobileView, setIsMobileView] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const updateField = (field: keyof ExperienceData, value: any) => {
     setData(prev => ({ ...prev, [field]: value }));
@@ -194,7 +193,6 @@ export function Editor() {
               <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-2xl relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-pink-500/5 pointer-events-none" />
                 
-                {/* Firma del Remitente */}
                 <div className="space-y-6 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <PenTool className="h-4 w-4" /> La Firma Eterna
@@ -219,7 +217,6 @@ export function Editor() {
                   </div>
                 </div>
 
-                {/* Fecha Memorable */}
                 <div className="space-y-6 pt-6 border-t border-white/5 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <Calendar className="h-4 w-4" /> Fecha de Nuestra Historia
@@ -254,7 +251,6 @@ export function Editor() {
                   </div>
                 </div>
 
-                {/* Intensidad de Explosión */}
                 <div className="space-y-6 pt-6 border-t border-white/5 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <Volume2 className="h-4 w-4" /> Intensidad de Sentimientos
@@ -273,7 +269,6 @@ export function Editor() {
                   </div>
                 </div>
 
-                {/* Banda Sonora */}
                 <div className="space-y-6 pt-6 border-t border-white/5 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <Youtube className="h-4 w-4" /> Banda Sonora (YouTube Link)
