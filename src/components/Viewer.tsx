@@ -1,3 +1,4 @@
+
 "use client"
 
 import React, { useState, useEffect } from 'react';
@@ -6,7 +7,7 @@ import { ThemeWrapper } from './ThemeWrapper';
 import { ParticleCanvas } from './ParticleCanvas';
 import { CinematicTypewriter } from './CinematicTypewriter';
 import { YouTubePlayer } from './YouTubePlayer';
-import { Heart, Sparkles, ChevronRight, Calendar } from 'lucide-react';
+import { Heart, Sparkles, ChevronRight, Calendar, Volume2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -43,7 +44,6 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
 
   if (!mounted) return null;
 
-  // Font sizes with defaults for older encoded URLs
   const titleSize = data.titleFontSize || 64;
   const nameSize = data.nameFontSize || 32;
   const messageSize = data.messageFontSize || 24;
@@ -64,7 +64,6 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
 
       <div className="relative z-20 w-full min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden">
         
-        {/* --- INTRO STAGE --- */}
         {stage === 'intro' && (
           <div className="flex flex-col items-center gap-10 text-center animate-in fade-in zoom-in duration-1000 w-full max-w-4xl">
             <div className="space-y-4">
@@ -121,7 +120,6 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
           </div>
         )}
 
-        {/* --- MESSAGE STAGE --- */}
         {stage === 'message' && (
           <div className="w-full max-w-4xl animate-in fade-in slide-in-from-bottom-10 duration-1000 px-4 flex flex-col items-center">
             <div className={cn(
@@ -187,7 +185,6 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
           </div>
         )}
 
-        {/* --- SECRET STAGE --- */}
         {stage === 'secret' && (
           <div className="flex flex-col items-center justify-center text-center space-y-12 animate-in fade-in zoom-in duration-1000 px-6 w-full max-w-6xl h-full">
              <div className="relative flex flex-col items-center w-full">
@@ -228,7 +225,7 @@ export function Viewer({ data, isPreview = false }: ViewerProps) {
                       ))}
                     </div>
                     <p className="text-[8px] uppercase tracking-[0.6em] text-white font-black border-l border-white/20 pl-4">
-                      {data.ambientSound} mode active
+                      MODO {data.ambientSound.toUpperCase()} ACTIVO
                     </p>
                   </div>
                 )}
