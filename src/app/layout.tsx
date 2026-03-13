@@ -1,4 +1,4 @@
-import type {Metadata} from '../../zip/src/node_modules/next';
+import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
