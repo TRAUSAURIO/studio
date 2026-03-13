@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
-import { ExperienceData, DEFAULT_EXPERIENCE, ThemeType, ParticleType, FontStyle, AmbientSoundType } from '@/lib/types';
+import { ExperienceData, DEFAULT_EXPERIENCE, ThemeType, ParticleType, AmbientSoundType } from '@/lib/types';
 import { ROMANTIC_TEMPLATES } from '@/lib/templates';
 import { getSharableUrl } from '@/lib/encoding';
 import { Input } from './ui/input';
@@ -12,8 +12,8 @@ import { Slider } from './ui/slider';
 import { Switch } from './ui/switch';
 import { 
   Heart, Share2, Wand2, Monitor, Smartphone, Palette, Sparkles, 
-  Music, Type, MessageSquare, Image as ImageIcon, User, 
-  Calendar, Waves, Volume2, PenTool, Youtube, Info, Shield
+  Type, MessageSquare, Image as ImageIcon, User, 
+  Calendar, Waves, Volume2, PenTool, Youtube, Shield
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Viewer } from './Viewer';
@@ -38,39 +38,12 @@ export function Editor() {
     updateField('youtubeId', videoId);
   };
 
-  const loadTemplate = (templateKey: string) => {
-    const template = ROMANTIC_TEMPLATES[templateKey];
-    if (template) {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setData({
-          ...DEFAULT_EXPERIENCE,
-          ...template,
-        });
-        setIsTransitioning(false);
-        toast({
-          title: "Atmósfera Aplicada",
-          description: `El escenario '${templateKey}' se ha configurado con éxito.`,
-        });
-      }, 500);
-    }
-  };
-
-  const copyUrl = () => {
-    const url = getSharableUrl(data);
-    navigator.clipboard.writeText(url);
-    toast({
-      title: "Enlace Eterno Copiado",
-      description: "Tu mensaje está listo para ser descubierto.",
-    });
-  };
-
   const getIntensityLabel = (val: number) => {
-    if (val < 20) return "Susurro";
-    if (val < 40) return "Suave";
-    if (val < 60) return "Medio";
-    if (val < 80) return "Intenso";
-    return "Tormenta de Amor";
+    if (val < 20) return "Susurro de brillos...";
+    if (val < 40) return "Suave brisa romántica...";
+    if (val < 60) return "Lluvia de sentimientos...";
+    if (val < 80) return "Intensa pasión...";
+    return "¡Una tormenta de amor eterno!";
   };
 
   return (
@@ -109,7 +82,7 @@ export function Editor() {
         <div className="flex-1 space-y-8 animate-blur-in pb-10">
           {activeTab === 'content' && (
             <div className="space-y-8">
-              <div className="space-y-4">
+               <div className="space-y-4">
                 <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-3">
                   <Wand2 className="h-4 w-4" /> Selecciona una Obra
                 </Label>
@@ -117,60 +90,38 @@ export function Editor() {
                   {Object.keys(ROMANTIC_TEMPLATES).map((key) => (
                     <button
                       key={key}
-                      onClick={() => loadTemplate(key)}
+                      onClick={() => {
+                        setData({ ...DEFAULT_EXPERIENCE, ...ROMANTIC_TEMPLATES[key] });
+                        toast({ title: "Escenario Aplicado", description: `Configurado: ${key}` });
+                      }}
                       className={cn(
                         "p-4 rounded-xl border text-left transition-all glass-card group relative overflow-hidden",
-                        data.title === ROMANTIC_TEMPLATES[key].title ? "border-pink-500/50 bg-pink-500/10 ring-2 ring-pink-500/20 shadow-[0_0_30px_rgba(236,72,153,0.1)]" : "border-white/5"
+                        data.title === ROMANTIC_TEMPLATES[key].title ? "border-pink-500/50 bg-pink-500/10" : "border-white/5"
                       )}
                     >
                       <p className="text-[11px] font-black text-white capitalize mb-1">{key.replace('-', ' ')}</p>
-                      <p className="text-[8px] text-slate-500 uppercase tracking-widest font-bold group-hover:text-pink-400 transition-colors">Curado</p>
+                      <p className="text-[8px] text-slate-500 uppercase tracking-widest font-bold">Curado</p>
                     </button>
                   ))}
                 </div>
               </div>
-
+              
               <div className="space-y-6 pt-6 border-t border-white/5">
                 <div className="space-y-3">
-                  <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                    <MessageSquare className="h-3 w-3 text-pink-500" /> Título de la Carta
-                  </Label>
-                  <Input
-                    value={data.title}
-                    onChange={e => updateField('title', e.target.value)}
-                    className="bg-white/5 border-white/10 h-12 focus:border-pink-500/50 transition-all rounded-xl font-headline"
-                  />
-                </div>
-                {/* Ad placement for Editor - Non-intrusive */}
-                <AdUnit slot="1234567890" className="opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
-                <div className="space-y-3">
-                  <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                    <User className="h-3 w-3 text-pink-500" /> Dedicado a
-                  </Label>
-                  <Input
-                    value={data.name}
-                    onChange={e => updateField('name', e.target.value)}
-                    className="bg-white/5 border-white/10 h-12 rounded-xl"
-                  />
+                  <Label className="text-[11px] text-slate-400 font-bold">Título de la Carta</Label>
+                  <Input value={data.title} onChange={e => updateField('title', e.target.value)} className="bg-white/5 border-white/10 rounded-xl" />
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
-                    <ImageIcon className="h-3 w-3 text-blue-400" /> Imagen de Portada (URL)
-                  </Label>
-                  <Input
-                    value={data.imageUrl}
-                    placeholder="https://images.unsplash.com/..."
-                    onChange={e => updateField('imageUrl', e.target.value)}
-                    className="bg-white/5 border-white/10 h-12 rounded-xl"
-                  />
+                  <Label className="text-[11px] text-slate-400 font-bold">Dedicado a</Label>
+                  <Input value={data.name} onChange={e => updateField('name', e.target.value)} className="bg-white/5 border-white/10 rounded-xl" />
                 </div>
                 <div className="space-y-3">
-                  <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">✒️ Tu Mensaje</Label>
-                  <Textarea
-                    value={data.message}
-                    onChange={e => updateField('message', e.target.value)}
-                    className="min-h-[160px] bg-white/5 border-white/10 leading-relaxed resize-none rounded-xl text-sm p-4"
-                  />
+                  <Label className="text-[11px] text-slate-400 font-bold">Mensaje Secreto</Label>
+                  <Input value={data.secretMessage} onChange={e => updateField('secretMessage', e.target.value)} placeholder="Lo que solo tú y yo sabemos..." className="bg-white/5 border-white/10 rounded-xl" />
+                </div>
+                <div className="space-y-3">
+                  <Label className="text-[11px] text-slate-400 font-bold">Tu Mensaje Principal</Label>
+                  <Textarea value={data.message} onChange={e => updateField('message', e.target.value)} className="min-h-[160px] bg-white/5 border-white/10 rounded-xl" />
                 </div>
               </div>
             </div>
@@ -186,13 +137,11 @@ export function Editor() {
                   <select 
                     value={data.theme} 
                     onChange={e => updateField('theme', e.target.value as ThemeType)}
-                    className="w-full bg-black/40 border border-white/10 h-12 rounded-xl px-4 text-sm focus:outline-none focus:border-purple-500 transition-all text-slate-200"
+                    className="w-full bg-black/40 border border-white/10 h-12 rounded-xl px-4 text-sm text-slate-200"
                   >
                     <option value="midnight-romance">🌑 Midnight Romance</option>
                     <option value="cinematic-love">🎬 Cinematic Love</option>
                     <option value="golden-hour">🌅 Golden Hour</option>
-                    <option value="starlit-night">🌌 Noche Estrellada</option>
-                    <option value="rose-garden">🌹 Jardín de Rosas</option>
                     <option value="parchment">📜 Ancient Parchment</option>
                     <option value="luxury-white">💎 Luxury White</option>
                   </select>
@@ -204,109 +153,187 @@ export function Editor() {
                   <select 
                     value={data.particles} 
                     onChange={e => updateField('particles', e.target.value as ParticleType)}
-                    className="w-full bg-black/40 border border-white/10 h-12 rounded-xl px-4 text-sm focus:outline-none focus:border-yellow-500 transition-all text-slate-200"
+                    className="w-full bg-black/40 border border-white/10 h-12 rounded-xl px-4 text-sm text-slate-200"
                   >
                     <option value="gold-dust">✨ Polvo Dorado</option>
                     <option value="hearts">💓 Corazones</option>
                     <option value="petals">🌸 Pétalos</option>
                     <option value="stars">⭐ Estrellas</option>
-                    <option value="snow">❄️ Nieve</option>
-                    <option value="glitter">💎 Brillos</option>
                   </select>
                 </div>
               </div>
-              <AdUnit slot="0987654321" format="rectangle" />
+
               <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-xl">
                 <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
-                  <Type className="h-4 w-4" /> Tamaños de Fuente
+                  <Type className="h-4 w-4" /> Tipografía Volumétrica
                 </Label>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-[10px] text-slate-400 uppercase font-bold">Título</Label>
-                    <span className="text-[10px] text-pink-500 font-mono">{data.titleFontSize}px</span>
+                {[
+                  { label: "Título", field: "titleFontSize", min: 20, max: 120 },
+                  { label: "Nombre", field: "nameFontSize", min: 12, max: 80 },
+                  { label: "Mensaje", field: "messageFontSize", min: 14, max: 48 },
+                  { label: "Secreto", field: "secretFontSize", min: 40, max: 200 },
+                ].map(item => (
+                  <div key={item.field} className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <Label className="text-[10px] text-slate-400 uppercase font-bold">{item.label}</Label>
+                      <span className="text-[10px] text-pink-500 font-mono">{(data as any)[item.field]}px</span>
+                    </div>
+                    <Slider 
+                      value={[(data as any)[item.field]]} 
+                      min={item.min} max={item.max} step={1}
+                      onValueChange={([val]) => updateField(item.field as any, val)}
+                    />
                   </div>
-                  <Slider 
-                    value={[data.titleFontSize]} 
-                    min={20} max={120} step={1}
-                    onValueChange={([val]) => updateField('titleFontSize', val)}
-                  />
-                </div>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <Label className="text-[10px] text-slate-400 uppercase font-bold">Dedicado a</Label>
-                    <span className="text-[10px] text-pink-500 font-mono">{data.nameFontSize}px</span>
-                  </div>
-                  <Slider 
-                    value={[data.nameFontSize]} 
-                    min={12} max={80} step={1}
-                    onValueChange={([val]) => updateField('nameFontSize', val)}
-                  />
-                </div>
+                ))}
               </div>
             </div>
           )}
 
           {activeTab === 'extra' && (
-            <div className="space-y-8">
-              <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-xl overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-pink-500/5 pointer-events-none" />
+            <div className="space-y-8 animate-in fade-in duration-700">
+              <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-2xl relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 to-pink-500/5 pointer-events-none" />
+                
+                {/* Firma del Remitente */}
                 <div className="space-y-6 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
-                    <Youtube className="h-4 w-4" /> Banda Sonora
+                    <PenTool className="h-4 w-4" /> La Firma Eterna
                   </Label>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <Input
-                      placeholder="URL de YouTube..."
-                      defaultValue={data.youtubeId ? `https://www.youtube.com/watch?v=${data.youtubeId}` : ''}
-                      onChange={e => handleYoutubeLink(e.target.value)}
-                      className="bg-black/40 border-white/10 h-14 rounded-xl px-4"
+                      value={data.senderName}
+                      onChange={e => updateField('senderName', e.target.value)}
+                      placeholder="De: Mi corazón, siempre tuyo..."
+                      className="bg-black/40 border-white/10 h-14 rounded-xl px-4 italic placeholder:text-slate-600"
+                    />
+                    <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/5">
+                      <div className="space-y-1">
+                        <Label className="text-[10px] text-slate-400 uppercase font-bold">Estilo Manuscrito</Label>
+                        <p className="text-[8px] text-slate-500 italic">Simula el trazo de tinta real</p>
+                      </div>
+                      <Switch 
+                        checked={data.senderIsCursive} 
+                        onCheckedChange={val => updateField('senderIsCursive', val)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Fecha Memorable */}
+                <div className="space-y-6 pt-6 border-t border-white/5 relative">
+                  <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
+                    <Calendar className="h-4 w-4" /> Fecha de Nuestra Historia
+                  </Label>
+                  <div className="space-y-4">
+                    <Input
+                      type="date"
+                      value={data.specialDate}
+                      onChange={e => updateField('specialDate', e.target.value)}
+                      className="bg-black/40 border-white/10 h-14 rounded-xl px-4 text-slate-200"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                      {['Hoy', 'Primer Beso', 'Aniversario'].map(chip => (
+                        <Button 
+                          key={chip}
+                          variant="outline" 
+                          className="h-8 text-[8px] uppercase tracking-widest border-white/10 bg-white/5 hover:bg-pink-500/10 hover:border-pink-500/30 rounded-full"
+                          onClick={() => {
+                            const date = new Date().toISOString().split('T')[0];
+                            updateField('specialDate', date);
+                            updateField('showDate', true);
+                          }}
+                        >
+                          {chip}
+                        </Button>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-3 px-2">
+                       <Switch checked={data.showDate} onCheckedChange={val => updateField('showDate', val)} />
+                       <span className="text-[10px] text-slate-400 uppercase font-bold">Mostrar fecha poéticamente</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Intensidad de Explosión */}
+                <div className="space-y-6 pt-6 border-t border-white/5 relative">
+                  <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
+                    <Volume2 className="h-4 w-4" /> Intensidad de Sentimientos
+                  </Label>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center px-1">
+                       <span className="text-[9px] text-slate-500 italic">{getIntensityLabel(data.confettiStrength)}</span>
+                       <span className="text-[10px] font-mono text-pink-500">{data.confettiStrength}%</span>
+                    </div>
+                    <Slider 
+                      value={[data.confettiStrength]} 
+                      min={0} max={100} step={5}
+                      onValueChange={([val]) => updateField('confettiStrength', val)}
+                      className="premium-slider"
                     />
                   </div>
                 </div>
+
+                {/* Banda Sonora */}
                 <div className="space-y-6 pt-6 border-t border-white/5 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
-                    <PenTool className="h-4 w-4" /> La Firma
+                    <Youtube className="h-4 w-4" /> Banda Sonora (YouTube Link)
                   </Label>
-                  <Input
-                    value={data.senderName}
-                    onChange={e => updateField('senderName', e.target.value)}
-                    placeholder="De: Tu corazón..."
-                    className="bg-black/40 border-white/10 h-14 rounded-xl px-4 italic"
-                  />
+                  <div className="space-y-3">
+                    <Input
+                      placeholder="Pega aquí el enlace de YouTube..."
+                      value={data.youtubeId ? `https://www.youtube.com/watch?v=${data.youtubeId}` : ''}
+                      onChange={e => handleYoutubeLink(e.target.value)}
+                      className="bg-black/40 border-white/10 h-14 rounded-xl px-4"
+                    />
+                    <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/5">
+                      <div className="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center animate-pulse">
+                         <Waves className="h-4 w-4 text-blue-400" />
+                      </div>
+                      <select 
+                        value={data.ambientSound}
+                        onChange={e => updateField('ambientSound', e.target.value as AmbientSoundType)}
+                        className="bg-transparent text-[10px] uppercase font-bold tracking-widest outline-none text-slate-400 flex-1"
+                      >
+                        <option value="none">Sin Ambiente</option>
+                        <option value="heartbeat">💓 Latidos Suaves</option>
+                        <option value="rain">🌧️ Lluvia Romántica</option>
+                        <option value="wind">🍃 Viento Nocturno</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="pt-4">
-                <Button 
-                  onClick={copyUrl}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black text-xs h-16 rounded-2xl shadow-xl shadow-pink-500/30 flex gap-3 uppercase tracking-[0.2em] shimmer-btn"
-                >
-                  <Share2 className="h-5 w-5" /> GENERAR ENLACE ETERNO
-                </Button>
-              </div>
+
+              <AdUnit slot="999888777" className="opacity-40" />
+
+              <Button 
+                onClick={() => {
+                  const url = getSharableUrl(data);
+                  navigator.clipboard.writeText(url);
+                  toast({ title: "Enlace Eterno Copiado", description: "Envía esta magia ahora mismo." });
+                }}
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 h-16 rounded-2xl shadow-xl shadow-pink-500/20 flex gap-3 uppercase tracking-[0.2em] font-black text-xs shimmer-btn"
+              >
+                <Share2 className="h-5 w-5" /> GENERAR ENLACE ETERNO
+              </Button>
             </div>
           )}
         </div>
 
         <footer className="mt-8 pt-6 flex flex-col items-center gap-4 opacity-40 border-t border-white/5">
-          <div className="flex gap-4 mb-2">
-             <Link href="/privacy" className="text-[8px] uppercase tracking-widest hover:text-pink-500 transition-colors flex items-center gap-1">
-               <Shield className="h-3 w-3" /> Privacidad
-             </Link>
-          </div>
+          <Link href="/privacy" className="text-[8px] uppercase tracking-widest hover:text-pink-500">Privacidad</Link>
           <div className="flex gap-6">
-             <Monitor onClick={() => setIsMobileView(false)} className={cn("h-4 w-4 cursor-pointer hover:text-pink-500 transition-all", !isMobileView && "text-pink-500 scale-110")} />
-             <Smartphone onClick={() => setIsMobileView(true)} className={cn("h-4 w-4 cursor-pointer hover:text-pink-500 transition-all", isMobileView && "text-pink-500 scale-110")} />
+             <Monitor onClick={() => setIsMobileView(false)} className={cn("h-4 w-4 cursor-pointer", !isMobileView && "text-pink-500")} />
+             <Smartphone onClick={() => setIsMobileView(true)} className={cn("h-4 w-4 cursor-pointer", isMobileView && "text-pink-500")} />
           </div>
-          <p className="text-[7px] uppercase tracking-[0.4em] font-black text-center">LoveLink Engine • Premium 2026</p>
+          <p className="text-[7px] uppercase tracking-[0.4em] font-black">LoveLink Engine 2026</p>
         </footer>
       </div>
 
       <div className="flex-1 relative bg-[#01040f] flex items-center justify-center p-4 md:p-12 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/10 via-transparent to-purple-900/10 pointer-events-none" />
         <div className={cn(
-          "relative transition-all duration-700 ease-in-out shadow-2xl border border-white/5 overflow-hidden flex items-center justify-center",
-          isMobileView ? "w-[360px] h-[740px] rounded-[3rem]" : "w-full h-full max-w-6xl rounded-[2.5rem]",
-          isTransitioning && "scale-95 opacity-50 blur-sm"
+          "relative transition-all duration-700 ease-in-out shadow-2xl border border-white/5 overflow-hidden",
+          isMobileView ? "w-[360px] h-[740px] rounded-[3rem]" : "w-full h-full max-w-6xl rounded-[2.5rem]"
         )}>
           <Viewer data={data} isPreview={true} />
         </div>
