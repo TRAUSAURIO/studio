@@ -13,7 +13,7 @@ import { Switch } from './ui/switch';
 import { 
   Heart, Share2, Wand2, Monitor, Smartphone, Palette, Sparkles, 
   Music, Type, MessageSquare, Image as ImageIcon, User, 
-  Calendar, Waves, Volume2, PenTool
+  Calendar, Waves, Volume2, PenTool, Check
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Viewer } from './Viewer';
@@ -66,10 +66,7 @@ export function Editor() {
 
   return (
     <div className="min-h-screen bg-[#020617] text-slate-50 flex flex-col md:flex-row overflow-hidden font-sans">
-      {/* --- NEON EDITOR SIDEBAR --- */}
       <div className="w-full md:w-[460px] p-8 md:p-10 overflow-y-auto h-screen border-r border-white/5 bg-[#020617]/90 backdrop-blur-3xl relative z-50 flex flex-col">
-        
-        {/* Logo Branding Premium */}
         <header className="mb-12 flex flex-col items-center gap-3 group">
           <div className="relative">
             <Heart className="h-10 w-10 text-pink-500 fill-current animate-pulse-slow group-hover:scale-110 transition-transform" />
@@ -81,7 +78,6 @@ export function Editor() {
           </div>
         </header>
 
-        {/* Cinematic Tabs Navigation */}
         <div className="flex bg-white/5 p-1 rounded-2xl mb-8 gap-1 border border-white/5 shadow-inner">
           {(['content', 'visual', 'extra'] as const).map((tab) => (
             <button
@@ -101,9 +97,7 @@ export function Editor() {
           ))}
         </div>
 
-        {/* Tab Content Panels */}
         <div className="flex-1 space-y-8 animate-blur-in pb-10">
-          
           {activeTab === 'content' && (
             <div className="space-y-8">
               <div className="space-y-4">
@@ -229,7 +223,6 @@ export function Editor() {
                 </div>
               </div>
 
-              {/* Advanced Typography Settings */}
               <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-xl">
                 <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                   <Type className="h-4 w-4" /> Tamaños de Fuente
@@ -291,7 +284,6 @@ export function Editor() {
               <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-pink-500/5 pointer-events-none" />
                 
-                {/* Firma del Remitente */}
                 <div className="space-y-6 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <PenTool className="h-4 w-4" /> La Firma
@@ -330,7 +322,6 @@ export function Editor() {
                   </div>
                 </div>
 
-                {/* Fecha Memorable */}
                 <div className="space-y-6 pt-6 border-t border-white/5 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <Calendar className="h-4 w-4" /> Fecha Memorable
@@ -374,7 +365,6 @@ export function Editor() {
                   )}
                 </div>
 
-                {/* Intensidad de Explosión */}
                 <div className="space-y-6 pt-6 border-t border-white/5 relative">
                   <div className="flex justify-between items-center">
                     <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
@@ -414,7 +404,6 @@ export function Editor() {
                   </div>
                 </div>
 
-                {/* Ambiente Sonoro */}
                 <div className="space-y-6 pt-6 border-t border-white/5 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <Waves className="h-4 w-4" /> Ambiente Inmersivo
@@ -469,7 +458,6 @@ export function Editor() {
           )}
         </div>
 
-        {/* Footer */}
         <footer className="mt-8 pt-6 flex flex-col items-center gap-4 opacity-40 border-t border-white/5">
           <div className="flex gap-6">
              <Monitor onClick={() => setIsMobileView(false)} className={cn("h-4 w-4 cursor-pointer hover:text-pink-500 transition-all", !isMobileView && "text-pink-500 scale-110")} />
@@ -479,7 +467,6 @@ export function Editor() {
         </footer>
       </div>
 
-      {/* --- PREVIEW AREA --- */}
       <div className="flex-1 relative bg-[#01040f] flex items-center justify-center p-4 md:p-12 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/10 via-transparent to-purple-900/10 pointer-events-none" />
         
