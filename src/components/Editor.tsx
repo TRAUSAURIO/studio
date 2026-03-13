@@ -13,7 +13,7 @@ import { Switch } from './ui/switch';
 import { 
   Heart, Share2, Wand2, Monitor, Smartphone, Palette, Sparkles, 
   Music, Type, MessageSquare, Image as ImageIcon, User, 
-  Calendar, Waves, Volume2, PenTool, Check
+  Calendar, Waves, Volume2, PenTool, Youtube, Info
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Viewer } from './Viewer';
@@ -27,6 +27,14 @@ export function Editor() {
 
   const updateField = (field: keyof ExperienceData, value: any) => {
     setData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleYoutubeLink = (url: string) => {
+    // Regex para extraer ID de Youtube
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    const videoId = (match && match[2].length === 11) ? match[2] : url;
+    updateField('youtubeId', videoId);
   };
 
   const loadTemplate = (templateKey: string) => {
@@ -284,7 +292,36 @@ export function Editor() {
               <div className="glass-card p-6 rounded-3xl space-y-8 border-white/10 shadow-xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-pink-500/5 pointer-events-none" />
                 
+                {/* --- MÚSICA PERSONALIZADA --- */}
                 <div className="space-y-6 relative">
+                  <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
+                    <Youtube className="h-4 w-4" /> Banda Sonora
+                  </Label>
+                  <div className="space-y-3">
+                    <Label className="text-[11px] text-slate-400 font-bold flex items-center gap-2">
+                      Enlace de YouTube
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        placeholder="https://www.youtube.com/watch?v=..."
+                        defaultValue={data.youtubeId ? `https://www.youtube.com/watch?v=${data.youtubeId}` : ''}
+                        onChange={e => handleYoutubeLink(e.target.value)}
+                        className="bg-black/40 border-white/10 h-14 rounded-xl px-4 pr-12 focus:ring-2 focus:ring-red-500/20"
+                      />
+                      <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                        <Youtube className="h-5 w-5 text-red-500/50" />
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2 p-3 bg-white/5 rounded-lg border border-white/5">
+                      <Info className="h-3 w-3 text-pink-400 shrink-0 mt-0.5" />
+                      <p className="text-[8px] text-slate-400 uppercase tracking-widest leading-relaxed">
+                        Pega el link de la canción que defina vuestra historia. Se reproducirá de fondo al abrir la carta.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-6 pt-6 border-t border-white/5 relative">
                   <Label className="text-[10px] uppercase tracking-[0.3em] text-pink-500/80 font-black flex items-center gap-2">
                     <PenTool className="h-4 w-4" /> La Firma
                   </Label>
